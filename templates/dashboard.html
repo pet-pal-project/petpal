@@ -1,17 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>SUP SUP</h1>
-<p>HELLO</p>
-<button type="button" class="button-lg">Pet Pal</button>
+<h1>Petpal Dashboard</h1>
+<!-- <button type="button" class="button-lg">Pet Pal</button> -->
 
 <h2>My Pets</h2>
+
+<section>
 {% if my_pet_list %}
     {% for pet in my_pet_list %}
-        {{ pet.name }}
+
+    <img src="{{pet.profile_image.url}}">
+    <p><a href="{{pet.get_absolute_url}}"><strong>{{ pet.name }}</strong></a>
     {% endfor %}
 {% else %}
-    <p>You have no pets.</p>
+    <p>You are a lonely bastard.</p>
 {% endif %}
+</section>
+
+
 
 {% endblock %} 

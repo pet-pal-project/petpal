@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
 
