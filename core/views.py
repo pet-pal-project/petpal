@@ -16,7 +16,7 @@ def index(request):
 def pet_detail(request,pk):
     pet = Pet.objects.get(pk=pk)
  
-    return render(request, 'pet_detail.html', {
+    return render(request, 'pet-detail.html', {
         'pet' : pet,
       
     })

@@ -30,6 +30,7 @@ urlpatterns = [
 urlpatterns += [
     path('', RedirectView.as_view(url='dashboard/')),
     path('dashboard/', views.index, name='home'),
+    path('pet/<int:pk>', views.pet_detail, name='pet-detail'),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

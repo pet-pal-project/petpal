@@ -1,1 +1,36 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<h1>Pet Profile</h1>
+<!-- <button type="button" class="button-lg">Pet Pal</button> -->
+
+<section>
+<h2>{{ pet.name }}</h2>
+<img src="{{pet.profile_image.url}}">
+
+
+
+<div class="info">
+<h3>Owner</h3>
+<p>{{ pet.owner }}</p>
+</div>
+
+<div class="info">
+<h3>About Me</h3>
+<p>{{ pet.about_me }}</p>
+</div>
+
+<div class="info">
+<h3>Vet Info</h3>
+<p>{{ pet.vet_info }}</p>
+</div>
+
+<div class="info">
+<h3>Emergency Contact</h3>
+<p>{{ pet.emergency_contact }}</p>
+</div>
+</section>
+
+
+
+{% endblock %}
