@@ -2,8 +2,7 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  margin: 0;
-  padding: 20px;
+  margin: 10px;
   text-align: center;
 }
 
@@ -11,4 +10,14 @@ img {
   border-radius: 50%;
   width:100%;
   max-width:300px;
+}
+
+section{
+  padding: 20px;
+  align-content: center;
+  
+}
+
+.info{
+  padding: 10px;
 }
