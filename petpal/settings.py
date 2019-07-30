@@ -58,7 +58,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'petpal.urls'
-url(r'^accounts/', include('registration.backends.default.urls')),
 
 TEMPLATES = [
     {
