@@ -10,7 +10,7 @@
 {% if my_pet_list %}
     {% for pet in my_pet_list %}
 
-    <img src="{{pet.profile_image.url}}">
+    <img src="{{pet.profile_Image.url}}">
     <p><a href="{{pet.get_absolute_url}}"><strong>{{ pet.name }}</strong></a>
     {% endfor %}
 {% else %}

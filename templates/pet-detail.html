@@ -3,10 +3,10 @@
 {% block content %}
 <h1>Pet Profile</h1>
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
-
-<section>
 <h2>{{ pet.name }}</h2>
-<img src="{{pet.profile_image.url}}">
+<section>
+
+<img src="{{pet.profile_Image.url}}">
 
 
 
@@ -17,17 +17,19 @@
 
 <div class="info">
 <h3>About Me</h3>
-<p>{{ pet.about_me }}</p>
+<p>{{ pet.about_Me }}</p>
 </div>
 
+{% if pet.vet_Info %}
 <div class="info">
 <h3>Vet Info</h3>
-<p>{{ pet.vet_info }}</p>
+<p>{{ pet.vet_Info }}</p>
 </div>
+{% endif %}
 
 <div class="info">
 <h3>Emergency Contact</h3>
-<p>{{ pet.emergency_contact }}</p>
+<p>{{ pet.emergency_Contact }}</p>
 </div>
 </section>
 
