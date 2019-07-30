@@ -12,7 +12,7 @@ class Pet (models.Model):
     breed = models.CharField(max_length=150, null=False, blank=True)
     weight = models.DecimalField(max_digits=4, decimal_places=2, null=False, blank=True)
     birthdate = models.DateField()
-    profile_image = models.ImageField(upload_to="media/")
+    profile_image = models.ImageField(upload_to="pet_pictures/")
     owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="pet_owner")
     sitter = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="pet_sitter", blank=True)
     about_me = models.TextField(max_length=2000, help_text="Tell us about your pet (likes, dislikes, fun quirks, and more).", null=True, blank=True)
