@@ -21,18 +21,21 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include, url  # For django versions before 2.0
 from django.urls import include, path  # For django versions from 2.0 and up
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
 urlpatterns += [
-    path('', RedirectView.as_view(url='index/')),
-    # path('index/', views.index, name='home'),
+    path('', RedirectView.as_view(url='dashboard/')),
+    path('dashboard/', views.index, name='home'),
+    path('pet/<int:pk>', views.pet_detail, name='pet-detail'),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG:

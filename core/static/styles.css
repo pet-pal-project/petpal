@@ -1,6 +1,23 @@
 body {
-    color: #325050;
-    background: rgb(170, 233, 88);
-    font-family: 'Libre Baskerville', sans-serif;
-    font-size: 100%;
-  }
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 10px;
+  text-align: center;
+}
+
+img {
+  border-radius: 50%;
+  width:100%;
+  max-width:300px;
+}
+
+section{
+  padding: 20px;
+  align-content: center;
+  
+}
+
+.info{
+  padding: 10px;
+}
