@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'core',
 ]
+
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +58,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'petpal.urls'
+url(r'^accounts/', include('registration.backends.default.urls')),
 
 TEMPLATES = [
     {
