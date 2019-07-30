@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1> SUP SUP </h1>
-{% endblock %}
+<h1>SUP SUP</h1>
+<p>HELLO</p>
+<button type="button" class="button-lg">Pet Pal</button>
+
+<h2>My Pets</h2>
+{% if my_pet_list %}
+    {% for pet in my_pet_list %}
+        {{ pet.name }}
+    {% endfor %}
+{% else %}
+    <p>You have no pets.</p>
+{% endif %}
+
+{% endblock %} 

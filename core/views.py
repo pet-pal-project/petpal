@@ -5,9 +5,18 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
-    pet_list = Pet.objects.all()
+    my_pet_list = Pet.objects.filter(owner=request.user)
 
     context = {
-        'pet_list': pet_list,
+        'my_pet_list': my_pet_list,
     }
     return render(request, 'dashboard.html', context=context)
+
+def pet_detail(request,pk):
+    pet = Pet.objects.get(pk=pk)
+ 
+    return render(request, 'pet_detail.html', {
+        'pet' : pet,
+      
+    })
+
