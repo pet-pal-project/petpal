@@ -9,13 +9,17 @@
 <section>
 {% if my_pet_list %}
     {% for pet in my_pet_list %}
-
-    <img src="{{pet.profile_Image.url}}">
-    <p><a href="{{pet.get_absolute_url}}"><strong>{{ pet.name }}</strong></a>
+    <div class="pet-display">
+        <img src="{{pet.profile_Image.url}}">
+        <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>{{ pet.name }}</strong></a>
+    </div>
     {% endfor %}
 {% else %}
-    <p>You are a lonely bastard.</p>
+    <p>You have no pets.</p>
 {% endif %}
+<div id="wrapper">
+<button class="add-pet-button" onclick="location.href = 'www.google.com';">Add a pet</button>
+</div>
 </section>
 
 

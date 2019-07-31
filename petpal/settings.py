@@ -45,6 +45,9 @@ INSTALLED_APPS = [
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 
+LOGIN_REDIRECT_URL= '/dashboard'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

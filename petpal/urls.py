@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -31,7 +32,7 @@ urlpatterns += [
     path('', RedirectView.as_view(url='dashboard/')),
     path('dashboard/', views.index, name='home'),
     path('pet/<int:pk>', views.pet_detail, name='pet-detail'),
-    path(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 
 ]
 
