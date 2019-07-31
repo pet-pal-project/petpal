@@ -146,3 +146,6 @@ INTERNAL_IPS = ['127.0.0.1']
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+
+in_production = bool(os.getenv('PRODUCTION'))
+DEBUG = not in_production
