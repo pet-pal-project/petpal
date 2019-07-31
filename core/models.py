@@ -34,18 +34,23 @@ class Pet (models.Model):
 
 class Visit (models.Model):
     sitter_id = models.CharField(max_length=50, null=False, blank=False)
-    in_checklist = models.ManytoManyField(Checklist)
+    due_date_on = models.DateTimeField(auto_now=False)        
 
 class Checklist (models.Model):
-    pet_id = models.ForeignKey(Pet)
-    tasks = models.ForeignKey(Task, on_delete=models.SET_NULL)
+    pet_id = models.ForeignKey(Pet, on_delete=models.CASCADE)
     visits = models.ForeignKey(Visit, on_delete=models.CASCADE)
+
 
 class Task (models.Model):
     description = models.TextField(null=False, blank=False)
-    due_date_on = models.DateTime(auto_now=False)
-    checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL) 
+    checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
     completed = models.BooleanField(default=False)
+
+
+
+
+
+
 
     
 
