@@ -45,6 +45,9 @@ INSTALLED_APPS = [
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 
+LOGIN_REDIRECT_URL= '/dashboard'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,3 +142,7 @@ MEDIA_URL = '/media/'
 # Django-debug-toolbar settings
 
 INTERNAL_IPS = ['127.0.0.1']
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
