@@ -33,6 +33,7 @@ urlpatterns += [
     path('dashboard/', views.index, name='home'),
     path('pet/<int:pk>', views.pet_detail, name='pet-detail'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
+    path('update/', views.update_profile, name='update-profile'),
 
 ]
 
