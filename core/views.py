@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.models import Pet, Routine, Critical, Profile, User
+from core.models import Pet, Visit, Checklist, Task, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
