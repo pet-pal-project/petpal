@@ -15,6 +15,7 @@
         <form action="{% url 'update-profile' %}" method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
+             
             <button id="new-q-button">Submit</button>
         </form>
 </div>
