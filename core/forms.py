@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from core.models import Pet
+from core.models import Pet, Profile
+from django.forms import ModelForm
 
 
 class SignUpForm(UserCreationForm):
@@ -14,7 +15,19 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
 
 
+from django import forms
 
+
+class ProfileUpdateForm(forms.Form):
+    homephone= forms.CharField(max_length=10)
+    mobilephone = forms.CharField(max_length=10)
+    workphone = forms.CharField(max_length=10)
+
+
+class ProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['home_phone','mobile_phone','work_phone']
 
 
 

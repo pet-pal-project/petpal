@@ -1,0 +1,22 @@
+
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="section">
+<div id="new-q-form">
+    <h1>Update Profile for {{request.user}}</h1>
+    <h2>Current Data</h2>
+    <p>Home Phone:{{user.profile.home_phone}}</p>
+    <p>Mobile Phone:{{user.profile.mobile_phone}}</p>
+    <p>Work Phone:{{user.profile.work_phone}}</p>
+    <br>
+    <h2>Update Numbers</h2>
+        <form action="{% url 'update-profile' %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+            <button id="new-q-button">Submit</button>
+        </form>
+</div>
+</div>
+{% endblock %}
