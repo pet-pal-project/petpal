@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'core',
-    'send',
 ]
 
 ACCOUNT_ACTIVATION_DAYS = 7
@@ -159,8 +158,8 @@ DEBUG = not in_production
 
 # Email configurations:
 EMAIL_HOST = ''
-EMAIL_PORT = 
+EMAIL_PORT = ''
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS =
-EMAIL_USESSL =
+EMAIL_USE_TLS =''
+EMAIL_USESSL =''
