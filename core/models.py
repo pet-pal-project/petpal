@@ -15,10 +15,9 @@ class Pet (models.Model):
     weight_in_lbs = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     sex = models.CharField(max_length=20, blank=True)
     color_and_Markings = models.CharField(max_length=200, blank=True)
-    birthdate = models.DateField()
+    age = models.CharField(max_length=4, null=True, blank=True)
     profile_Image = models.ImageField(upload_to="pet_pictures", blank=True)
     owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="pet_owner")
-    sitter = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="pet_sitter", blank=True)
     about_Me = models.TextField(max_length=2000, help_text="Tell us about your pet (likes, dislikes, fun quirks, and more).", null=True, blank=True)
     vet_Info = models.TextField(max_length=2000, help_text="Enter your pet's vet info (name, address, and contact number).", null=True, blank=True)
     emergency_Contact = models.TextField(max_length=2000, help_text="Someone other than yourself in the case of emergencies (enter their name, number, and email).", null=True, blank=True)
@@ -33,26 +32,48 @@ class Pet (models.Model):
     def get_absolute_url(self):
         return reverse('pet-detail', args=[str(self.id)])
 
-class Routine (models.Model):
-    description = models.TextField(max_length=200, null=False, blank=False)
-    due_date = models.DateTimeField()
-    assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
-    complete = models.BooleanField(default=False)
-    notes = models.TextField(max_length=2000, null=True, blank=True)
-    assigned_sitter = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="assigned_sitter")
+class Visit (models.Model):
+    sitter_id = models.CharField(max_length=50, null=False, blank=False)
+    due_date_on = models.DateTimeField(auto_now=False)        
 
-    def __str__(self):
-        return self.description
+class Checklist (models.Model):
+    pet_id = models.ForeignKey(Pet, on_delete=models.CASCADE)
+    visits = models.ForeignKey(Visit, on_delete=models.CASCADE)
 
-class Critical (models.Model):
-    description = models.TextField(max_length=200, null=False, blank=False)
-    due_date = models.DateTimeField()
-    assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
-    complete = models.BooleanField(default=False)
-    notes = models.TextField(max_length=2000, null=True, blank=True)
 
-    def __str__(self):
-        return self.description
+class Task (models.Model):
+    description = models.TextField(null=False, blank=False)
+    checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
+    completed = models.BooleanField(default=False)
+
+
+
+
+
+
+
+    
+
+# class Routine (models.Model):
+#     description = models.TextField(max_length=200, null=False, blank=False)
+#     due_date = models.DateTimeField()
+#     assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
+#     complete = models.BooleanField(default=False)
+#     notes = models.TextField(max_length=2000, null=True, blank=True)
+#     assigned_sitter = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="assigned_sitter")
+
+#     def __str__(self):
+#         return self.description
+
+# class Critical (models.Model):
+#     description = models.TextField(max_length=200, null=False, blank=False)
+#     due_date = models.DateTimeField()
+#     assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
+#     complete = models.BooleanField(default=False)
+#     notes = models.TextField(max_length=2000, null=True, blank=True)
+
+#     def __str__(self):
+#         return self.description
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

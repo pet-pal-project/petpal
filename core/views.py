@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from core.models import Pet, Routine, Critical, Profile
+from core.models import Pet, Visit, Checklist, Task, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
+from core.forms import ProfileUpdateForm, ProfileForm
+
 
 
 # Create your views here.
@@ -39,6 +41,7 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/registration_form.html', {'form': form})
+
 
 
 
@@ -88,3 +91,19 @@ def critical_task_complete(request):
     )
 
     return HttpResponse('Mail successfully sent')
+
+@login_required
+def update_profile(request):
+    
+        current_user = request.user
+        user = Profile.objects.get(user=current_user)
+  
+        if request.method == "POST":
+            form = ProfileForm(request.POST,instance=user)
+            if form.is_valid():
+                profile = form.save(commit=False)
+                profile.save()
+            return redirect(to='home')
+        else:
+            form = ProfileForm()
+        return render(request, 'update_profile.html', {'form': form})

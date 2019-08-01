@@ -13,7 +13,7 @@
     <header class="base-header">
             <div id="login-area">
                     {% if request.user.is_authenticated %}
-                      <p id="login-name">Welcome, {{request.user}}! | <a href="{% url 'home' %}">Home</a> | <a class="washed-blue" href="/accounts/logout">Logout</a></p>
+                      <p id="login-name">Welcome, {{request.user}}! | <a href="{% url 'home' %}">Home</a> | <a class="washed-blue" href="/update">Update Profile</a> | <a class="washed-blue" href="/accounts/logout">Logout</a></p>
                     {% else %}
                       <p><a class="washed-blue" href="/accounts/login">Login</a> | <a class="washed-blue" href="/accounts/register">Register</a></p>
                     {% endif %}
