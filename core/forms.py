@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from core.models import Pet, Profile
 from django.forms import ModelForm
-
+import datetime
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
@@ -33,8 +33,7 @@ class ProfileForm(ModelForm):
 
 class ChecklistForm(forms.Form):
    sitter = forms.CharField(max_length=50)
-   date = forms.DateField()
-   pets = forms.ModelChoiceField(queryset=Pet.objects.filter(owner=request.user))
+   date = forms.DateField(initial=datetime.date.today)
    task1 = forms.CharField(max_length=300)
    task2 = forms.CharField(max_length=300)
    task3 = forms.CharField(max_length=300)

@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
-from core.forms import ProfileUpdateForm, ProfileForm
+from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm
+from django.shortcuts import get_object_or_404
 
 
 
@@ -41,6 +42,26 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/registration_form.html', {'form': form})
+
+def add_checklist(request, pk):
+    pet = get_object_or_404(Pet, pk=pk)
+    if request.method == 'POST':
+        form = ChecklistForm(request.POST)
+        if form.is_valid():
+            sitter = form.cleaned_data.get('sitter')
+            date = form.cleaned_data.get('date')
+            task1 = form.cleaned_data.get('task1')
+            task2 = form.cleaned_data.get('task2')
+            task3 = form.cleaned_data.get('task3')
+            task4 = form.cleaned_data.get('task4')
+            task5 = form.cleaned_data.get('task5')
+            new_visit = Visit(sitter_id=sitter, due_date_on=date)    
+            new_visit.save()
+
+            return redirect('home')
+    else:
+        form = ChecklistForm()
+    return render(request, 'add_checklist.html', {'form': form})
 
 
 
