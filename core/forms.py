@@ -31,3 +31,12 @@ class ProfileForm(ModelForm):
 
   
 
+class ChecklistForm(forms.Form):
+   sitter = forms.CharField(max_length=50)
+   date = forms.DateField()
+   pets = forms.ModelChoiceField(queryset=Pet.objects.filter(owner=request.user))
+   task1 = forms.CharField(max_length=300)
+   task2 = forms.CharField(max_length=300)
+   task3 = forms.CharField(max_length=300)
+   task4 = forms.CharField(max_length=300)
+   task5 = forms.CharField(max_length=300)
