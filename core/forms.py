@@ -5,7 +5,6 @@ from core.models import Pet, Profile
 from django.forms import ModelForm
 import datetime
 from crispy_forms.layout import Layout, Submit, Row, Column
-
 from functools import partial
 
 
@@ -40,7 +39,6 @@ class ChecklistForm(forms.Form):
     sitter = forms.CharField(max_length=50)
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
-    date = forms.DateField(initial=datetime.date.today)
     task1 = forms.CharField(max_length=300)
     task2 = forms.CharField(max_length=300)
     task3 = forms.CharField(max_length=300)
