@@ -30,6 +30,7 @@
     <button id="register">Click to Submit</button>
 </form> -->
 
+
 <h1>Sign up</h1>
 <section>
 <form method="post">
@@ -37,5 +38,18 @@
   {{ form.as_p }}
   <button type="submit">Sign up</button>
 </form>
+
 </section>
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2012",
+      // You can put more options here.
+
+    });
+  });
+  </script>
 {% endblock  %}

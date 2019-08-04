@@ -77,6 +77,7 @@ class Task (models.Model):
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # name = models.CharField(max_length=200, blank=False, help_text="Enter your first and last name")
     home_phone= models.CharField(max_length=10, blank=True)
     mobile_phone = models.CharField(max_length=10, blank=True)
     work_phone = models.CharField(max_length=10, blank=True)
