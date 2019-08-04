@@ -48,15 +48,42 @@ def add_checklist(request, pk):
     if request.method == 'POST':
         form = ChecklistForm(request.POST)
         if form.is_valid():
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
             sitter = form.cleaned_data.get('sitter')
-            date = form.cleaned_data.get('date')
             task1 = form.cleaned_data.get('task1')
             task2 = form.cleaned_data.get('task2')
             task3 = form.cleaned_data.get('task3')
             task4 = form.cleaned_data.get('task4')
             task5 = form.cleaned_data.get('task5')
-            new_visit = Visit(sitter_id=sitter, due_date_on=date)    
-            new_visit.save()
+            num_days = end_date - start_date
+            exisitng_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=start_date)
+
+            if num_days == 0:
+                if exisitng_visit:
+                    visit_id = existing_visit[0].pk
+                else:
+                    new_visit = Visit(sitter_id=sitter, due_date_on=date)    
+                    new_visit.save()
+                    visit_id = new_visit.pk
+
+            new_checklist = Checklist(visit=visit_id, pet_id=pet)
+            new_checklist.save()
+
+            new_task1 = Task(description=task1, checklist_id=new_checklist.pk)
+            new_task2 = Task(description=task2, checklist_id=new_checklist.pk)
+            new_task3 = Task(description=task3, checklist_id=new_checklist.pk)
+            new_task4 = Task(description=task4, checklist_id=new_checklist.pk)
+            new_task5 = Task(description=task5, checklist_id=new_checklist.pk)
+            new_task1.save()
+            new_task2.save()
+            new_task3.save()
+            new_task4.save()
+            new_task5.save()
+
+            # for day in range(num_days):
+            #     check_date = start_date + datetime.timedelta(days=day)
+
 
             return redirect('home')
     else:
