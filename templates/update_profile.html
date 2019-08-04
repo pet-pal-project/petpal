@@ -1,6 +1,7 @@
 
 {% extends "base.html" %}
 
+{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="section">
@@ -14,7 +15,7 @@
     <h2>Update Numbers</h2>
         <form action="{% url 'update-profile' %}" method="POST">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form|crispy }}
              
             <button id="new-q-button">Submit</button>
         </form>
