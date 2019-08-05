@@ -14,18 +14,29 @@ from django.shortcuts import get_object_or_404
 @login_required
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
+  
+    my_visits = Visit.objects.filter(sitter_id=request.user)
+    all_checklists = Checklist.objects.all()
 
     context = {
         'my_pet_list': my_pet_list,
+        'my_visits': my_visits,
+        'all_checklists': all_checklists,
     }
     return render(request, 'dashboard.html', context=context)
 
 def pet_detail(request,pk):
     pet = Pet.objects.get(pk=pk)
- 
+    pet_checklists = Checklist.objects.filter(pet_id=pet)
+    all_tasks = Task.objects.all()
+    all_checklists = Checklist.objects.all()
+
+
+        
     return render(request, 'pet-detail.html', {
         'pet' : pet,
-      
+        'all_tasks': all_tasks,
+        'all_checklists': all_checklists,
     })
 
 
@@ -48,15 +59,47 @@ def add_checklist(request, pk):
     if request.method == 'POST':
         form = ChecklistForm(request.POST)
         if form.is_valid():
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
             sitter = form.cleaned_data.get('sitter')
-            date = form.cleaned_data.get('date')
             task1 = form.cleaned_data.get('task1')
             task2 = form.cleaned_data.get('task2')
             task3 = form.cleaned_data.get('task3')
             task4 = form.cleaned_data.get('task4')
             task5 = form.cleaned_data.get('task5')
-            new_visit = Visit(sitter_id=sitter, due_date_on=date)    
+            num_days = end_date - start_date
+            exisitng_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=start_date)
+
+            # if num_days == 0:
+            #     if exisitng_visit:
+            #         visit_id = existing_visit[0].pk
+            #     else:
+            new_visit = Visit(sitter_id=sitter, due_date_on=start_date)    
             new_visit.save()
+            visit_id = new_visit.pk
+
+            new_checklist = Checklist(visits=new_visit, pet_id=pet)
+            new_checklist.save()
+
+            new_task1 = Task(description=task1, checklist_id=new_checklist)
+            new_task1.save()
+            new_task2 = Task(description=task2, checklist_id=new_checklist)
+            new_task2.save()
+            new_task3 = Task(description=task3, checklist_id=new_checklist)
+            new_task3.save()
+            new_task4 = Task(description=task4, checklist_id=new_checklist)
+            new_task4.save()
+            new_task5 = Task(description=task5, checklist_id=new_checklist)
+            new_task5.save()
+            
+            
+            
+            
+          
+
+            # for day in range(num_days):
+            #     check_date = start_date + datetime.timedelta(days=day)
+
 
             return redirect('home')
     else:
@@ -115,18 +158,16 @@ def critical_task_complete(request):
 
 @login_required
 def update_profile(request):
-    
-        current_user = request.user
-        user = Profile.objects.get(user=current_user)
-  
+        user = Profile.objects.get(user=request.user)
+        form = ProfileForm(instance=request.user)
         if request.method == "POST":
-            form = ProfileForm(request.POST,instance=user)
+            form = ProfileForm(request.POST,instance=request.user)
             if form.is_valid():
                 profile = form.save(commit=False)
                 profile.save()
             return redirect(to='home')
         else:
-            form = ProfileForm()
+            form = ProfileForm(instance=request.user)
         return render(request, 'update_profile.html', {'form': form})
 
 
@@ -163,3 +204,22 @@ def add_pet(request):
     else:
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})  
+
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user.profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect(to='home')
+
+    else:
+        form = ProfileForm(instance=request.user.profile)
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'update_profile.html', context)
+

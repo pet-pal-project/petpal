@@ -34,23 +34,16 @@ class Pet (models.Model):
 
 class Visit (models.Model):
     sitter_id = models.CharField(max_length=50, null=False, blank=False)
-    due_date_on = models.DateTimeField(auto_now=False)        
+    due_date_on = models.DateField(auto_now=False)        
 
 class Checklist (models.Model):
     pet_id = models.ForeignKey(Pet, on_delete=models.CASCADE)
-    visits = models.ForeignKey(Visit, on_delete=models.CASCADE)
-
+    visit = models.ForeignKey(Visit, on_delete=models.CASCADE)
 
 class Task (models.Model):
     description = models.TextField(null=False, blank=False)
     checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
-    completed = models.BooleanField(default=False)
-
-
-
-
-
-
+    completed_on = models.DateTimeField(null=True, blank=True)
 
     
 
