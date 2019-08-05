@@ -17,9 +17,9 @@
 {% else %}
     <p>You have no pets.</p>
 {% endif %}
-<div id="wrapper">
-<button class="add-pet-button" onclick="location.href = 'www.google.com';">Add a pet</button>
-</div>
+    <form id="AddPetButton">
+        <a href="{% url 'add-pet' %}" class="AddPetButton" type="button">Add a Pet</a>
+    </form>
 </section>
 
 

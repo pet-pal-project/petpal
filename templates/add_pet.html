@@ -1,26 +1,18 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
 
 {% block content %}
-  <form action="" method="post">
-    {% csrf_token %}
-    <table>
-    {{ form.as_table }}
-    </table>
-    <input type="submit" value="Submit">
+
+<div id="add-pet-form">
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %%}
+      {{ form|crispy }}
+    <button type="submit">Submit</button>
   </form>
+
+</div>
+
 {% endblock %}
-
-
-
-<!-- Name:
-Animal Type: 
-Breed (not required), 
-Weight, 
-Age (based on aprox birth date), 
-Sex, 
-Color/markings, 
-Profile image, 
-Owner
-About me, 
-Vet info, 
-Emergency contact. -->
