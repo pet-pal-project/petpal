@@ -38,8 +38,14 @@
 <section>
     {% if my_visits %}
         {% for visit in my_visits %}
+            {% for checklist in all_checklists %}
+                {% if checklist.visits == visit %}
+                    <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>A visit is scheduled for {{ checklist.pet_id }}</strong></a>
+            
             <!-- {for checklist in m} -->
-            {{ visit.id }}
+                
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     {% else %}
         <p>You have no upcoming visits.</p>

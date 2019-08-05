@@ -16,12 +16,12 @@ def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
   
     my_visits = Visit.objects.filter(sitter_id=request.user)
-
+    all_checklists = Checklist.objects.all()
 
     context = {
         'my_pet_list': my_pet_list,
         'my_visits': my_visits,
-    
+        'all_checklists': all_checklists,
     }
     return render(request, 'dashboard.html', context=context)
 
