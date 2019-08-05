@@ -44,3 +44,10 @@ class ChecklistForm(forms.Form):
     task3 = forms.CharField(max_length=300)
     task4 = forms.CharField(max_length=300)
     task5 = forms.CharField(max_length=300)
+
+
+
+class AddAPetForm(ModelForm):
+    class Meta:
+        model = Pet
+        fields = ['name','animal','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact',]

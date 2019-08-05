@@ -1,26 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <form action="" method="post">
+  <div class="post">
     {% csrf_token %}
     <table>
-    {{ form.as_table }}
+      <a href="{% url 'add_a_pet' %}" class="add_a_pet"><span class="add a pet"></span></a>
     </table>
     <input type="submit" value="Submit">
-  </form>
+  </div>
 {% endblock %}
 
-
-
-<!-- Name:
-Animal Type: 
-Breed (not required), 
-Weight, 
-Age (based on aprox birth date), 
-Sex, 
-Color/markings, 
-Profile image, 
-Owner
-About me, 
-Vet info, 
-Emergency contact. -->

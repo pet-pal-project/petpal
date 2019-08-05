@@ -128,3 +128,26 @@ def update_profile(request):
         else:
             form = ProfileForm()
         return render(request, 'update_profile.html', {'form': form})
+
+
+
+def add_a_pet(request):
+    if request.method == 'POST':
+        form = AddAPetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get()
+            animal = form.cleaned_data.get()
+            breed = form.cleaned_data.get()
+            color_and_Markings= form.cleaned_data.get()
+            weight_in_lbs = form.cleaned_data.get()
+            age = form.cleaned_data.get()
+            sex = form.cleaned_data.get() 
+            profile_Image = form.cleaned_data.get()
+            owner = form.cleaned_data.get()
+            about_Me = form.cleaned_data.get()
+            vet_Info = form.cleaned_data.get()
+            emergency_Contact = form.cleaned_data.get()
+    else:
+        form = AddAPetForm()
+    return render(request, 'add_pet.html', {'form': form})

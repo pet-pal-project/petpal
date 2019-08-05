@@ -35,6 +35,7 @@ urlpatterns += [
     url(r'^accounts/', include('registration.backends.simple.urls')),
     path('update/', views.update_profile, name='update-profile'),
     path('addchecklist/<int:pk>', views.add_checklist, name='add-checklist'),
+    path('add_a_pet/<int:pk>', views.add_a_pet, name='add_a_pet'),
 
 
 ]
