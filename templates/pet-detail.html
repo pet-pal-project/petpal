@@ -32,6 +32,13 @@
 <a href="{% url 'add-checklist' pet.id %}"> Add a checklist! </a>
 </section>
 
+<h2>Checklist</h2>
 
+{% for task in all_tasks %}
+    {% if task.checklist_id.pet_id == pet %}
+        <input type="checkbox"> {{ task.description }} for visit on {{ task.checklist_id.visits.due_date_on }}<br>
+        <p></p>
+    {% endif %}
+{% endfor %}
 
 {% endblock %}
