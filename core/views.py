@@ -93,6 +93,7 @@ def add_checklist(request, pk):
 
 
 
+
 def sitter_arrived(request):
     send_mail(
         'Your sitter has arrived.',
