@@ -23,5 +23,28 @@
 </section>
 
 
+<h2>Upcoming Pet Sitting Visits</h2>
+
+<!-- <section>
+    {% if my_checklists %}
+        {% for checklist in my_checklists %}
+            {{ checklist.pet_id }}
+        {% endfor %}
+    {% else %}
+        <p>You have no upcoming visits.</p>
+    {% endif %}  
+</section> -->
+
+<section>
+    {% if my_visits %}
+        {% for visit in my_visits %}
+            <!-- {for checklist in m} -->
+            {{ visit.id }}
+        {% endfor %}
+    {% else %}
+        <p>You have no upcoming visits.</p>
+    {% endif %}  
+</section>
+
 
 {% endblock %} 
