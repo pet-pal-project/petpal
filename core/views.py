@@ -78,7 +78,7 @@ def add_checklist(request, pk):
             new_visit.save()
             visit_id = new_visit.pk
 
-            new_checklist = Checklist(visits=new_visit, pet_id=pet)
+            new_checklist = Checklist(visit=new_visit, pet_id=pet)
             new_checklist.save()
 
             new_task1 = Task(description=task1, checklist_id=new_checklist)
@@ -104,7 +104,7 @@ def add_checklist(request, pk):
             return redirect('home')
     else:
         form = ChecklistForm()
-    return render(request, 'add_checklist.html', {'form': form})
+    return render(request, 'add_checklist.html', {'form': form, 'pet' : pet,})
 
 
 

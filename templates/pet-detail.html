@@ -36,7 +36,7 @@
 
 {% for task in all_tasks %}
     {% if task.checklist_id.pet_id == pet %}
-        <input type="checkbox"> {{ task.description }} for visit on {{ task.checklist_id.visits.due_date_on }}<br>
+        <input type="checkbox"> {{ task.description }} for visit on {{ task.checklist_id.visit.due_date_on }}<br>
         <p></p>
     {% endif %}
 {% endfor %}
