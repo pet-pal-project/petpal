@@ -45,12 +45,6 @@ class Task (models.Model):
     checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
     completed_on = models.DateTimeField(null=True, blank=True)
 
-
-
-
-
-
-
     
 
 # class Routine (models.Model):

@@ -158,16 +158,33 @@ def critical_task_complete(request):
 
 @login_required
 def update_profile(request):
-    
-        current_user = request.user
-        user = Profile.objects.get(user=current_user)
-  
+        user = Profile.objects.get(user=request.user)
+        form = ProfileForm(instance=request.user)
         if request.method == "POST":
-            form = ProfileForm(request.POST,instance=user)
+            form = ProfileForm(request.POST,instance=request.user)
             if form.is_valid():
                 profile = form.save(commit=False)
                 profile.save()
             return redirect(to='home')
         else:
-            form = ProfileForm()
+            form = ProfileForm(instance=request.user)
         return render(request, 'update_profile.html', {'form': form})
+
+
+def profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user.profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect(to='home')
+
+    else:
+        form = ProfileForm(instance=request.user.profile)
+
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'update_profile.html', context)
