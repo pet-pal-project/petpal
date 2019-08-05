@@ -144,9 +144,15 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
+AWS_ACCESS_KEY_ID = 'AKIAJWNDYQ3L5ABS2FHA'
+AWS_SECRET_ACCESS_KEY = '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'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_STORAGE_BUCKET_NAME = 'critter-sitter'
+AWS_S3_REGION_NAME = 'us-west-2'
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
 
 # Django-debug-toolbar settings
 
