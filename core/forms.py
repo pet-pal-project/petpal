@@ -50,4 +50,5 @@ class ChecklistForm(forms.Form):
 class AddAPetForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = ('name','animal','profile_Image','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact')
+        exclude = ['owner']
+        fields = ('name','animal','profile_Image','breed','weight_in_lbs','sex','color_and_Markings','age', 'about_Me','vet_Info','emergency_Contact')

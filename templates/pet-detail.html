@@ -3,9 +3,15 @@
 {% block content %}
 
 <h1>Pet Profile: {{ pet.name }}</h1>
+{% if pet.owner == request.user %}
+<a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist</a>
+{% endif %}
+
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
+<div class="pet-detail-page">
+<img class="pet-image-detail" src="{{pet.profile_Image.url}}">
+</div>
 <section>
-<img src="{{pet.profile_Image.url}}">
 
 <div class="info">
 <h2>Owner</h2>
@@ -29,16 +35,24 @@
 <p>{{ pet.emergency_Contact }}</p>
 </div>
 
-<a href="{% url 'add-checklist' pet.id %}"> Add a checklist! </a>
+
 </section>
 
 <h2>Checklist</h2>
 
+
+{% for checklist in pet_checklists %}
+    <p><b>Things to do on {{ checklist.visit.due_date_on }}</b></p>
+
+
 {% for task in all_tasks %}
-    {% if task.checklist_id.pet_id == pet %}
-        <input type="checkbox"> {{ task.description }} for visit on {{ task.checklist_id.visit.due_date_on }}<br>
-        <p></p>
-    {% endif %}
+{% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %}
+    <input type="checkbox"> {{ task.description }}<br>
+    <p></p>
+{% endif %}
+{% endfor %}
+
+        
 {% endfor %}
 
 {% endblock %}

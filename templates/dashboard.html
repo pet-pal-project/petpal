@@ -9,17 +9,21 @@
 <section>
 {% if my_pet_list %}
     {% for pet in my_pet_list %}
-    <div class="pet-display">
-        <img src="{{pet.profile_Image.url}}">
-        <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>{{ pet.name }}</strong></a>
+    <div>
+        <div class="pet-display">
+            <img class="pet-image-homepage" src="{{pet.profile_Image.url}}">
+            <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>{{ pet.name }}</strong></a>
+        </div>
     </div>
     {% endfor %}
 {% else %}
     <p>You have no pets.</p>
 {% endif %}
-    <form id="AddPetButton">
-        <a href="{% url 'add-pet' %}" class="AddPetButton" type="button">Add a Pet</a>
-    </form>
+    
+<div class="pet-display">
+<a class="btn btn-primary" href="{% url 'add-pet' %}">Add a Pet</a>
+</div>
+
 </section>
 
 
@@ -39,11 +43,8 @@
     {% if my_visits %}
         {% for visit in my_visits %}
             {% for checklist in all_checklists %}
-                {% if checklist.visits == visit %}
-                    <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>A visit is scheduled for {{ checklist.pet_id }}</strong></a>
-            
-            <!-- {for checklist in m} -->
-                
+                {% if checklist.visit == visit %}
+                    <p><a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-primary"><strong>A visit is scheduled for {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</strong></a></p>
                 {% endif %}
             {% endfor %}
         {% endfor %}

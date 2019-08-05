@@ -37,6 +37,7 @@ def pet_detail(request,pk):
         'pet' : pet,
         'all_tasks': all_tasks,
         'all_checklists': all_checklists,
+        'pet_checklists': pet_checklists
     })
 
 
@@ -199,7 +200,9 @@ def add_pet(request):
     if request.method == 'POST':
         form = AddAPetForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            new_pet = form.save(commit=False)
+            new_pet.owner = request.user
+            new_pet.save()
             return redirect("home")
     else:
         form = AddAPetForm()
@@ -208,18 +211,14 @@ def add_pet(request):
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=request.user.profile)
-
         if form.is_valid():
             form.save()
             return redirect(to='home')
-
     else:
         form = ProfileForm(instance=request.user.profile)
-
 
     context = {
         'form': form,
     }
-
     return render(request, 'update_profile.html', context)
 
