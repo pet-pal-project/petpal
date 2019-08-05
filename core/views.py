@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
-from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm
+from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm
 from django.shortcuts import get_object_or_404
 
 

@@ -47,7 +47,8 @@ class ChecklistForm(forms.Form):
 
 
 
-class AddAPetForm(ModelForm):
+class AddAPetForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = ['name','animal','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact',]
+        fields = ('name','animal','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact',)
+        
