@@ -45,12 +45,6 @@ class Task (models.Model):
     checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
     completed = models.BooleanField(default=False)
 
-
-
-
-
-
-
     
 
 # class Routine (models.Model):
