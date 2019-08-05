@@ -4,12 +4,14 @@
 
 {% block content %}
 
-
-<form method="post">
-  {% csrf_token %%}
-    {{ form }}
-  <button type="submit">Submit</button>
-</form>
-
+<div id="add-pet-form">
+<p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %%}
+      {{ form }}
+    <button type="submit">Submit</button>
+  </form>
+</p>
+</div>
 
 {% endblock %}

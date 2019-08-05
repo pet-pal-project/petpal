@@ -136,18 +136,30 @@ def add_a_pet(request):
         form = AddAPetForm(request.POST)
         if form.is_valid():
             form.save()
-            name = form.cleaned_data.get()
-            animal = form.cleaned_data.get()
-            breed = form.cleaned_data.get()
-            color_and_Markings= form.cleaned_data.get()
-            weight_in_lbs = form.cleaned_data.get()
-            age = form.cleaned_data.get()
-            sex = form.cleaned_data.get() 
-            profile_Image = form.cleaned_data.get()
-            owner = form.cleaned_data.get()
-            about_Me = form.cleaned_data.get()
-            vet_Info = form.cleaned_data.get()
-            emergency_Contact = form.cleaned_data.get()
+            name = form.cleaned_data.get('name')
+            animal = form.cleaned_data.get('animal')
+            breed = form.cleaned_data.get('breed')
+            color_and_Markings= form.cleaned_data.get('color_and_Markings')
+            weight_in_lbs = form.cleaned_data.get('weight_in_lbs')
+            age = form.cleaned_data.get('age')
+            sex = form.cleaned_data.get('sex') 
+            # profile_Image = form.cleaned_data.get('profile_Image')
+            owner = form.cleaned_data.get('owner')
+            about_Me = form.cleaned_data.get('about_Me')
+            vet_Info = form.cleaned_data.get('vet_Info')
+            emergency_Contact = form.cleaned_data.get('emergency_Contact')
+        return redirect("home")
     else:
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})
+
+
+def add_pet(request):
+    if request.method == 'POST':
+        form = AddAPetForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = AddAPetForm()
+    return render(request, 'add_pet.html', {'form': form})  

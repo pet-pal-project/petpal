@@ -46,9 +46,8 @@ class ChecklistForm(forms.Form):
     task5 = forms.CharField(max_length=300)
 
 
-
+""" Missing 'add a profile image' for user."""
 class AddAPetForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = ('name','animal','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact',)
-        
+        fields = ('name','animal','profile_Image','breed','weight_in_lbs','sex','color_and_Markings','age','owner','about_Me','vet_Info','emergency_Contact')
