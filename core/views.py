@@ -178,7 +178,7 @@ def sitter_departed(request):
 def critical_task_missed(request):
     send_mail(
         'Critical task for today NOT marked complete.',
-         f'Hi { user.username }, we are notifiying you that our system does not yet have a record of {the critical task} being marked complete for the visit today. To reveiew tasks, please click here',
+         f'Hi { user.username }, we are notifiying you that our system does not yet have a record of a critical task being marked complete for the visit today. To reveiew tasks, please click here',
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
@@ -190,7 +190,7 @@ def critical_task_missed(request):
 def critical_task_complete(request):
     send_mail(
         'Your sitter has completed a critical task for today.',
-         f'Hi { user.username }, we are notifiying you that our system shows {sitter} has marked {the critical task} complete for the visit today. To reveiew tasks, please click here',
+         f'Hi { user.username }, we are notifiying you that our system shows sitter has marked  a critical task complete for the visit today. To reveiew tasks, please click here',
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
