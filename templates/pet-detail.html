@@ -17,10 +17,55 @@
 <p>{{ pet.owner }}</p>
 </div>
 
+{% if pet.animal %}
+<div class="info">
+<h2>Animal</h2>
+<p>{{ pet.animal }}</p>
+</div>
+{% endif %}
+
+{% if pet.age %}
+<div class="info">
+<h2>Age</h2>
+<p>{{ pet.age }}</p>
+</div>
+{% endif %}
+
+{% if pet.breed %}
+<div class="info">
+<h2>Breed</h2>
+<p>{{ pet.breed }}</p>
+</div>
+{% endif %}
+
+{% if pet.weight %}
+<div class="info">
+<h2>Weight</h2>
+<p>{{ pet.weight }} lbs.</p>
+</div>
+{% endif %}
+
+{% if pet.sex %}
+<div class="info">
+<h2>Sex</h2>
+<p>{{ pet.sex}}</p>
+</div>
+{% endif %}
+
+{% if pet.color_and_Markings %}
+<div class="info">
+<h2>Color and Markings</h2>
+<p>{{ pet.color_and_Markings }}</p>
+</div>
+{% endif %}
+
+
+{% if pet.about_Me %}
 <div class="info">
 <h2>About Me</h2>
 <p>{{ pet.about_Me }}</p>
 </div>
+{% endif %}
 
 {% if pet.vet_Info %}
 <div class="info">
@@ -29,10 +74,13 @@
 </div>
 {% endif %}
 
+
+{% if pet.emergency_Contact %}
 <div class="info">
 <h2>Emergency Contact</h2>
 <p>{{ pet.emergency_Contact }}</p>
 </div>
+{% endif %}
 
 
 </section>
@@ -46,14 +94,16 @@
     <form action="" method="POST">
     {% csrf_token %}
         {% for task in all_tasks %}
-        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %}
+        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %} 
+            
             {% if task.completed_on %}
-            <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
-            <p></p>
-            {% else %}
-            <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
-            <p></p>
+                <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
+                <p></p>
+                {% else %}
+                <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
+                <p></p>
             {% endif %}
+            
         {% endif %}
         {% endfor %}
     <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>

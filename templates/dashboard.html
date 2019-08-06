@@ -51,7 +51,7 @@
 
             {% if checklist.pet_id == pet %}
             <section>
-            <p><b>For {{ pet.name }} on {{ checklist.visit.due_date_on }}</b></p>
+            <p><b>For {{ pet.name }} on {{ checklist.visit.due_date_on }} with pet sitter {{ checklist.visit.sitter_id }}</b></p>
 
                 {% for task in all_tasks %}
                     {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on  %}
