@@ -3,6 +3,7 @@ from core.models import Pet, Visit, Checklist, Task, Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm
 from django.shortcuts import get_object_or_404
@@ -78,7 +79,7 @@ def add_checklist(request, pk):
             new_visit.save()
             visit_id = new_visit.pk
 
-            new_checklist = Checklist(visits=new_visit, pet_id=pet)
+            new_checklist = Checklist(visit=new_visit, pet_id=pet)
             new_checklist.save()
 
             new_task1 = Task(description=task1, checklist_id=new_checklist)
@@ -108,13 +109,27 @@ def add_checklist(request, pk):
 
 
 
+def new_pet_notification(request, user):
+    send_mail(
+        'You have created a new animal profile.',
+        f'Hi { user.username }, we are notifiying you that your a new animal profile has been successfully created!',
+        'admin@critter-sitter.com',
+        [f'{ user.email }'],
+        fail_silently=False,
+    )
+
+    return render(request, 'email.html')
+    
+    return HttpResponse('Mail successfully sent')
+
+
 
 def sitter_arrived(request):
     send_mail(
         'Your sitter has arrived.',
-        'Hi { owner }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
-        'admin@pet-pal.com',
-        ['amanda.minton@gmail.com'],
+        'Hi {{ user.name }}, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
+        'admin@critter-sitter.com',
+        ['{{ user.email }}'],
         fail_silently=False,
     )
 
@@ -124,9 +139,9 @@ def sitter_arrived(request):
 def sitter_departed(request):
     send_mail(
         'Visit for today is complete.',
-        'Hi { owner }, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
-        'admin@pet-pal.com',
-        ['amanda.minton@gmail.com'],
+        'Hi {{ user.name }}, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
+        'admin@critter-sitter.com',
+        ['{{ user.email }}'],
         fail_silently=False,
     )
 
@@ -136,9 +151,9 @@ def sitter_departed(request):
 def critical_task_missed(request):
     send_mail(
         'Critical task for today NOT marked complete.',
-        'Hi { owner }, we are notifiying you that our system does not yet have a record of {the critical task} being marked complete for the visit today. To reveiew tasks, please click here',
-        'admin@pet-pal.com',
-        ['amanda.minton@gmail.com'],
+        'Hi {{ user.name }}, we are notifiying you that our system does not yet have a record of {the critical task} being marked complete for the visit today. To reveiew tasks, please click here',
+        'admin@critter-sitter.com',
+        ['{{ user.email }}'],
         fail_silently=False,
     )
 
@@ -148,9 +163,9 @@ def critical_task_missed(request):
 def critical_task_complete(request):
     send_mail(
         'Your sitter has completed a critical task for today.',
-        'Hi { owner }, we are notifiying you that our system shows {sitter} has marked {the critical task} complete for the visit today. To reveiew tasks, please click here',
-        'admin@pet-pal.com',
-        ['amanda.minton@gmail.com'],
+        'Hi {{ user.name }}, we are notifiying you that our system shows {sitter} has marked {the critical task} complete for the visit today. To reveiew tasks, please click here',
+        'admin@critter-sitter.com',
+        ['{{ user.email }}'],
         fail_silently=False,
     )
 
@@ -190,6 +205,7 @@ def add_a_pet(request):
             vet_Info = form.cleaned_data.get('vet_Info')
             emergency_Contact = form.cleaned_data.get('emergency_Contact')
         return redirect("home")
+        
     else:
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})
@@ -200,10 +216,14 @@ def add_pet(request):
         form = AddAPetForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            user = request.user
+            new_pet_notification(request, user)
+            print("email sent")
             return redirect("home")
     else:
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})  
+
 
 def profile(request):
     if request.method == 'POST':
