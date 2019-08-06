@@ -5,7 +5,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.core.mail import send_mail
-from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm
+from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 import datetime
@@ -89,7 +89,7 @@ def add_checklist(request, pk):
         if form.is_valid():
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
-            sitter = form.cleaned_data.get('sitter')
+            sitter = form.cleaned_data.get('sitter') 
             task1 = form.cleaned_data.get('task1')
             task2 = form.cleaned_data.get('task2')
             task3 = form.cleaned_data.get('task3')
@@ -132,6 +132,7 @@ def add_checklist(request, pk):
             return redirect('home')
     else:
         form = ChecklistForm()
+        
     return render(request, 'add_checklist.html', {'form': form, 'pet' : pet,})
 
 
