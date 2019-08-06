@@ -1,11 +1,16 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <h1>Pet Profile: {{ pet.name }}</h1>
+{% if pet.owner == request.user %}
+<a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a>
+{% endif %}
+
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
+<div class="pet-detail-page">
+<img class="pet-image-detail" src="{{pet.profile_Image.url}}">
+</div>
 <section>
-<img src="{{pet.profile_Image.url}}">
 
 <div class="info">
 <h2>Owner</h2>
@@ -29,16 +34,34 @@
 <p>{{ pet.emergency_Contact }}</p>
 </div>
 
-<a href="{% url 'add-checklist' pet.id %}"> Add a checklist! </a>
+
 </section>
 
 <h2>Checklist</h2>
 
-{% for task in all_tasks %}
-    {% if task.checklist_id.pet_id == pet %}
-        <input type="checkbox"> {{ task.description }} for visit on {{ task.checklist_id.visits.due_date_on }}<br>
-        <p></p>
-    {% endif %}
-{% endfor %}
+{% if pet_checklists %}
+    {% for checklist in pet_checklists %}
+    <section>
+    <p><b>Things to do on {{ checklist.visit.due_date_on }}</b></p>
+    <form action="" method="POST">
+    {% csrf_token %}
+        {% for task in all_tasks %}
+        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %}
+            {% if task.completed_on %}
+            <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
+            <p></p>
+            {% else %}
+            <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
+            <p></p>
+            {% endif %}
+        {% endif %}
+        {% endfor %}
+    <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
+    </form> 
+    </section>  
+    {% endfor %}
+{% else %}
+    <p>No checklists for this pet today.</p>
+{% endif %}
 
 {% endblock %}
