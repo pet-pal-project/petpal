@@ -127,9 +127,9 @@ def new_pet_notification(request, user):
 def sitter_arrived(request):
     send_mail(
         'Your sitter has arrived.',
-        'Hi {{ user.name }}, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
+         f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
         'admin@critter-sitter.com',
-        ['{{ user.email }}'],
+        [f'{ user.email }'],
         fail_silently=False,
     )
 
@@ -139,9 +139,9 @@ def sitter_arrived(request):
 def sitter_departed(request):
     send_mail(
         'Visit for today is complete.',
-        'Hi {{ user.name }}, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
+         f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
         'admin@critter-sitter.com',
-        ['{{ user.email }}'],
+        [f'{ user.email }'],
         fail_silently=False,
     )
 
@@ -151,9 +151,9 @@ def sitter_departed(request):
 def critical_task_missed(request):
     send_mail(
         'Critical task for today NOT marked complete.',
-        'Hi {{ user.name }}, we are notifiying you that our system does not yet have a record of {the critical task} being marked complete for the visit today. To reveiew tasks, please click here',
+         f'Hi { user.username }, we are notifiying you that our system does not yet have a record of {the critical task} being marked complete for the visit today. To reveiew tasks, please click here',
         'admin@critter-sitter.com',
-        ['{{ user.email }}'],
+        [f'{ user.email }'],
         fail_silently=False,
     )
 
@@ -163,9 +163,9 @@ def critical_task_missed(request):
 def critical_task_complete(request):
     send_mail(
         'Your sitter has completed a critical task for today.',
-        'Hi {{ user.name }}, we are notifiying you that our system shows {sitter} has marked {the critical task} complete for the visit today. To reveiew tasks, please click here',
+         f'Hi { user.username }, we are notifiying you that our system shows {sitter} has marked {the critical task} complete for the visit today. To reveiew tasks, please click here',
         'admin@critter-sitter.com',
-        ['{{ user.email }}'],
+        [f'{ user.email }'],
         fail_silently=False,
     )
 
