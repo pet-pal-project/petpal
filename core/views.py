@@ -6,39 +6,65 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+import datetime
+
 
 
 
 # Create your views here.
 
+
+        
+
 @login_required
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
-  
     my_visits = Visit.objects.filter(sitter_id=request.user)
     all_checklists = Checklist.objects.all()
+    all_tasks = Task.objects.all()
+
 
     context = {
         'my_pet_list': my_pet_list,
         'my_visits': my_visits,
         'all_checklists': all_checklists,
+        'all_tasks': all_tasks,
     }
     return render(request, 'dashboard.html', context=context)
 
 def pet_detail(request,pk):
+
     pet = Pet.objects.get(pk=pk)
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
     all_checklists = Checklist.objects.all()
 
+    pet_tasks = []
 
-        
+    for task in all_tasks:
+        if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == task.checklist_id.visit.due_date_on:
+            pet_tasks.append(task)
+    
+    # print(pet_tasks)
+
+    if request.method == 'POST':
+        tasks_checked = request.POST.getlist('task')
+        for task_checked in tasks_checked:
+            task_id = int(task_checked)
+            task_completed = Task.objects.get(id=task_id)
+            task_completed.completed_on=datetime.datetime.now()
+            task_completed.save()
+        return HttpResponseRedirect(request.path_info)
+
     return render(request, 'pet-detail.html', {
         'pet' : pet,
         'all_tasks': all_tasks,
         'all_checklists': all_checklists,
         'pet_checklists': pet_checklists
     })
+    
+
 
 
 def register(request):
@@ -203,6 +229,7 @@ def add_pet(request):
             new_pet = form.save(commit=False)
             new_pet.owner = request.user
             new_pet.save()
+        
             return redirect("home")
     else:
         form = AddAPetForm()

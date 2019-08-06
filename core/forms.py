@@ -8,6 +8,8 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 from functools import partial
 
 
+
+
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')

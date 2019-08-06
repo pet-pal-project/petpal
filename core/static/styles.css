@@ -67,6 +67,10 @@ section{
   padding-bottom: 10px;
 }
 
+section .taskchecked{
+  text-decoration: line-through;
+}
+
 
 #wrapper {
   width: 100%;
