@@ -95,40 +95,85 @@ def add_checklist(request, pk):
             task3 = form.cleaned_data.get('task3')
             task4 = form.cleaned_data.get('task4')
             task5 = form.cleaned_data.get('task5')
-            num_days = end_date - start_date
-            exisitng_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=start_date)
+            print (start_date)
+            print (end_date)
+            delta = end_date - start_date
+            print(delta.days)
+            existing_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=start_date)
+            num_of_days = delta.days
+            if delta.days == 0:
+                if existing_visit:
+                    visitpk = existing_visit[0]
+                    new_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
+                    new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                    new_task1.save()
+                    new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                    new_task2.save()
+                    new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                    new_task3.save()
+                    new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                    new_task4.save()
+                    new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                    new_task5.save()
+                    print("EXISTING VISIT WITH DATE AND USER")
+                else:
+                    new_visit = Visit(sitter_id=sitter, due_date_on=start_date)    
+                    new_visit.save()
+                    visit_id = new_visit.pk
+                    new_checklist = Checklist(visit=new_visit, pet_id=pet)
+                    new_checklist.save()
+                    new_task1 = Task(description=task1, checklist_id=new_checklist)
+                    new_task1.save()
+                    new_task2 = Task(description=task2, checklist_id=new_checklist)
+                    new_task2.save()
+                    new_task3 = Task(description=task3, checklist_id=new_checklist)
+                    new_task3.save()
+                    new_task4 = Task(description=task4, checklist_id=new_checklist)
+                    new_task4.save()
+                    new_task5 = Task(description=task5, checklist_id=new_checklist)
+                    new_task5.save()
+                    print("A NEW VISIT WITH DATE AND USER")
+            else:
+                for day in range(num_of_days+1):
+                    print("MORE THAN ONE DAY!")
+                    current_date = start_date + datetime.timedelta(days=day)
+                    existing_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=current_date)
+                
+                    if existing_visit:
+                        visitpk = existing_visit[0]
+                        new_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
+                        new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                        new_task1.save()
+                        new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                        new_task2.save()
+                        new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                        new_task3.save()
+                        new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                        new_task4.save()
+                        new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                        new_task5.save()
+                        print("SAME DAY")
+                    else:
+                        new_visit = Visit(sitter_id=sitter, due_date_on=current_date)    
+                        new_visit.save()
+                        visit_id = new_visit.pk
+                        new_checklist = Checklist(visit=new_visit, pet_id=pet)
+                        new_checklist.save()
+                        new_task1 = Task(description=task1, checklist_id=new_checklist)
+                        new_task1.save()
+                        new_task2 = Task(description=task2, checklist_id=new_checklist)
+                        new_task2.save()
+                        new_task3 = Task(description=task3, checklist_id=new_checklist)
+                        new_task3.save()
+                        new_task4 = Task(description=task4, checklist_id=new_checklist)
+                        new_task4.save()
+                        new_task5 = Task(description=task5, checklist_id=new_checklist)
+                        new_task5.save()
+                        print("DIFFERENT DAYS")
 
-            # if num_days == 0:
-            #     if exisitng_visit:
-            #         visit_id = existing_visit[0].pk
-            #     else:
-            new_visit = Visit(sitter_id=sitter, due_date_on=start_date)    
-            new_visit.save()
-            visit_id = new_visit.pk
 
-            new_checklist = Checklist(visit=new_visit, pet_id=pet)
-            new_checklist.save()
 
-            new_task1 = Task(description=task1, checklist_id=new_checklist)
-            new_task1.save()
-            new_task2 = Task(description=task2, checklist_id=new_checklist)
-            new_task2.save()
-            new_task3 = Task(description=task3, checklist_id=new_checklist)
-            new_task3.save()
-            new_task4 = Task(description=task4, checklist_id=new_checklist)
-            new_task4.save()
-            new_task5 = Task(description=task5, checklist_id=new_checklist)
-            new_task5.save()
             
-            
-            
-            
-          
-
-            # for day in range(num_days):
-            #     check_date = start_date + datetime.timedelta(days=day)
-
-
             return redirect('home')
     else:
         form = ChecklistForm()

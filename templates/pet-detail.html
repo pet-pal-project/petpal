@@ -89,26 +89,32 @@
 
 {% if pet_checklists %}
     {% for checklist in pet_checklists %}
-    <section>
-    <p><b>Things to do on {{ checklist.visit.due_date_on }}</b></p>
-    <form action="" method="POST">
-    {% csrf_token %}
-        {% for task in all_tasks %}
-        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %} 
-            
-            {% if task.completed_on %}
-                <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
-                <p></p>
-                {% else %}
-                <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
-                <p></p>
-            {% endif %}
-            
+        {% if request.user.username == checklist.visit.sitter_id %}
+            <section>
+            <p><b>Things to do on {{ checklist.visit.due_date_on }} by {{ checklist.visit.sitter_id }}</b></p>
+            <form action="" method="POST">
+            {% csrf_token %}
+                {% for task in all_tasks %}
+
+
+                        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on and task.checklist_id.visit.sitter_id == request.user.username %} 
+                            
+                            {% if task.completed_on %}
+                                <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
+                                <p></p>
+                                {% else %}
+                                <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
+                                <p></p>
+                            {% endif %}
+
+
+                    {% endif %}
+
+                {% endfor %}
+            <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
+            </form> 
+            </section>  
         {% endif %}
-        {% endfor %}
-    <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
-    </form> 
-    </section>  
     {% endfor %}
 {% else %}
     <p>No checklists for this pet today.</p>
