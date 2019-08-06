@@ -139,19 +139,17 @@ def add_checklist(request, pk):
 def new_pet_notification(request, user):
     send_mail(
         'You have created a new animal profile.',
-        f'Hi { user.username }, we are notifiying you that your a new animal profile has been successfully created!',
+        f'Hi { user.username }, we are notifiying you that you have successfully created a new animal profile!',
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
     )
-
     return render(request, 'email.html')
-    
     return HttpResponse('Mail successfully sent')
 
 
 
-def sitter_arrived(request):
+def sitter_arrived(request, user):
     send_mail(
         'Your sitter has arrived.',
          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
@@ -159,11 +157,11 @@ def sitter_arrived(request):
         [f'{ user.email }'],
         fail_silently=False,
     )
-
+    return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
 
 
-def sitter_departed(request):
+def sitter_departed(request, user):
     send_mail(
         'Visit for today is complete.',
          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
@@ -171,11 +169,11 @@ def sitter_departed(request):
         [f'{ user.email }'],
         fail_silently=False,
     )
-
+    return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
 
 
-def critical_task_missed(request):
+def critical_task_missed(request, user):
     send_mail(
         'Critical task for today NOT marked complete.',
          f'Hi { user.username }, we are notifiying you that our system does not yet have a record of a critical task being marked complete for the visit today. To reveiew tasks, please click here',
@@ -183,11 +181,11 @@ def critical_task_missed(request):
         [f'{ user.email }'],
         fail_silently=False,
     )
-
+    return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
 
 
-def critical_task_complete(request):
+def critical_task_complete(request, user):
     send_mail(
         'Your sitter has completed a critical task for today.',
          f'Hi { user.username }, we are notifiying you that our system shows sitter has marked  a critical task complete for the visit today. To reveiew tasks, please click here',
@@ -195,8 +193,9 @@ def critical_task_complete(request):
         [f'{ user.email }'],
         fail_silently=False,
     )
-
+    return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
+
 
 @login_required
 def update_profile(request):
@@ -271,3 +270,12 @@ def profile(request):
     }
     return render(request, 'update_profile.html', context)
 
+
+
+# def visit_checkin(request):
+#     if request.method == 'POST':
+
+
+
+# def visit_complete(request):
+#     if request.method == 'POST':
