@@ -149,7 +149,7 @@ def new_pet_notification(request, user):
 
 
 
-def sitter_arrived(request, user):
+def sitter_arrived_notification(request, user):
     send_mail(
         'Your sitter has arrived.',
          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
@@ -161,7 +161,7 @@ def sitter_arrived(request, user):
     return HttpResponse('Mail successfully sent')
 
 
-def sitter_departed(request, user):
+def sitter_departed_notification(request, user):
     send_mail(
         'Visit for today is complete.',
          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
@@ -274,8 +274,9 @@ def profile(request):
 
 # def visit_checkin(request):
 #     if request.method == 'POST':
-
+#     sitter_arrived_notification(request, user)
 
 
 # def visit_complete(request):
 #     if request.method == 'POST':
+#     sitter_departed_notification(request, user)
