@@ -175,6 +175,8 @@ DEFAULT_FROM_EMAIL = 'amanda.minton@gmail.com'
 
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
+ADMINS = ['haghb1@gmail.com']
+
 if SENDGRID_API_KEY:
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_HOST_USER = 'apikey'
