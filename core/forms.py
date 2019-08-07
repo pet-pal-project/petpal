@@ -50,7 +50,7 @@ class ChecklistForm(forms.Form):
     task5 = forms.CharField(max_length=300)
 
 
-""" Missing 'add a profile image' for user."""
+"""Create a new animal profile."""
 class AddAPetForm(forms.ModelForm):
     class Meta:
         model = Pet
