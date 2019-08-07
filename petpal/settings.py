@@ -176,6 +176,8 @@ DEFAULT_FROM_EMAIL = 'MomentumCritter@gmail.com'
 
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
+ADMINS = ['']
+
 if SENDGRID_API_KEY:
     EMAIL_HOST = 'smtp.sendgrid.net'
     EMAIL_HOST_USER = 'apikey'

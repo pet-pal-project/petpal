@@ -7,7 +7,8 @@ import datetime
 from crispy_forms.layout import Layout, Submit, Row, Column
 from functools import partial
 
-
+class UserForm(forms.Form):
+    sitter = forms.ModelChoiceField(queryset=User.objects.all())
 
 
 class SignUpForm(UserCreationForm):
@@ -38,7 +39,8 @@ class ProfileForm(forms.ModelForm):
 
 class ChecklistForm(forms.Form):
     DateInput = partial(forms.DateInput, {'class': 'datepicker'})
-    sitter = forms.CharField(max_length=50)
+    # sitter = forms.CharField(max_length=50)
+    sitter = forms.ModelChoiceField(queryset=User.objects.all())
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
     task1 = forms.CharField(max_length=300)
