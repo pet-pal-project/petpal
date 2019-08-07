@@ -43,11 +43,16 @@ class ChecklistForm(forms.Form):
     sitter = forms.ModelChoiceField(queryset=User.objects.all())
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
-    task1 = forms.CharField(max_length=300)
-    task2 = forms.CharField(max_length=300)
-    task3 = forms.CharField(max_length=300)
-    task4 = forms.CharField(max_length=300)
-    task5 = forms.CharField(max_length=300)
+    task1 = forms.CharField(max_length=300, required=True)
+    task2 = forms.CharField(max_length=300, required=False)
+    task3 = forms.CharField(max_length=300, required=False)
+    task4 = forms.CharField(max_length=300, required=False)
+    task5 = forms.CharField(max_length=300, required=False)
+    task6 = forms.CharField(max_length=300, required=False)
+    task7 = forms.CharField(max_length=300, required=False)
+    task8 = forms.CharField(max_length=300, required=False)
+    task9 = forms.CharField(max_length=300, required=False)
+    task10 = forms.CharField(max_length=300, required=False)
 
 
 """ Missing 'add a profile image' for user."""
