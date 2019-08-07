@@ -38,6 +38,8 @@ urlpatterns += [
     path('add_pet/', views.add_pet, name='add-pet'),
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
     path('profile/<int:pk>', views.profile_page, name='profile'),
+    path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
+
 
 
 ]

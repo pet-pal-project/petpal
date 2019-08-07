@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from core.models import Pet, Visit, Checklist, Task, Profile
+from core.models import Pet, Visit, Checklist, Task, Profile, Contact
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 import datetime
 
@@ -428,10 +428,25 @@ def edit_pet(request,pk):
 
 def profile_page(request,pk):
         user = Profile.objects.get(pk=pk)
-   
-
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
         return render(request, 'profile.html', {
         'user' : user,
+        'existing_contact': existing_contact
  
         })
+
+
+def contact_added(request,pk):
+        user = User.objects.get(id=pk)
+        contact_profile = Profile.objects.get(pk=pk)
+        mainuser = request.user
+        new_contact = Contact(user=mainuser, name=contact_profile.user.username, email=user.email)
+        new_contact.save()
+
+        return render(request, 'contact-added.html', {
+        'contact_profile': contact_profile,
+        'user': user,
+ 
+        })
+
 

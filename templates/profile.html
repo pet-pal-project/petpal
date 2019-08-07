@@ -4,5 +4,12 @@
 
 {% block content %}
 
-<h1> Hello {{ user.user}} </h1>
+<h1>{{user.user}}'s Profile </h1>
+
+{% if existing_contact %}
+    <p>You've already added this user as a contact.</p> 
+{% else %}
+    <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-primary">Add to Contacts</a></p>
+{% endif %}
+
 {% endblock %}

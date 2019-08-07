@@ -88,7 +88,7 @@ class Profile (models.Model):
         return f"{self.user}"
 
 class Contact (models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=10, blank=True)
     email = models.CharField(max_length=50, blank=True)
