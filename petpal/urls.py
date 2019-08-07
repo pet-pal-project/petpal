@@ -37,8 +37,7 @@ urlpatterns += [
     path('addchecklist/<int:pk>', views.add_checklist, name='add-checklist'),
     path('add_pet/', views.add_pet, name='add-pet'),
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
-
-
+    
 ]
 
 # Use static() to add url mapping to serve static files during development (only)
@@ -55,3 +54,6 @@ if settings.DEBUG:
         # url(r'^__debug__/', include(debug_toolbar.urls)),
 
     ] + urlpatterns
+
+
+    
