@@ -37,10 +37,14 @@ body{
   display: flex;
   border-radius: 50%;
   width:100%;
-  max-height:300px;
-  max-width:300px;
-
+  height:300px;
+  width:300px;
+  overflow: hidden;
+  position: relative;
 }
+
+
+
 .pet-detail-page{
   display: flex;
   align-items: left;
