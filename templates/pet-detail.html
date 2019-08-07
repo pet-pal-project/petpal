@@ -3,8 +3,8 @@
 
 <h1>Critter Profile: {{ pet.name }}</h1>
 {% if pet.owner == request.user %}
-<a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a>
-<a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit Critter</a>
+<p><a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a></p>
+<p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit Critter</a></p>
 
 {% endif %}
 
