@@ -1,11 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Petpal Dashboard</h1>
+<h1>Dashboard</h1>
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
 
-<h2>My Pets</h2>
+<h2>Critters I'm Sitting</h2>
 
+<section>
+    {% if my_visits %}
+        {% for visit in my_visits %}
+            {% for checklist in all_checklists %}
+                {% if checklist.visit == visit %}
+                <div class="pet-display">
+                    <a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-primary">Scheduled visit for {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p>You have no upcoming visits.</p>
+    {% endif %}  
+</section>
+
+<h2>My Critters</h2>
 <section>
 {% if my_pet_list %}
     {% for pet in my_pet_list %}
@@ -17,32 +34,18 @@
     </div>
     {% endfor %}
 {% else %}
-    <p>You have no pets.</p>
+    <p>You have no critters.</p>
 {% endif %}
     
 <div class="pet-display">
-<a class="btn btn-primary" href="{% url 'add-pet' %}">Add a Pet</a>
+<a class="btn btn-primary" href="{% url 'add-pet' %}">Add a Critter</a>
 </div>
 
 </section>
 
 
-<h2>Pets I'm Sitting</h2>
 
-<section>
-    {% if my_visits %}
-        {% for visit in my_visits %}
-            {% for checklist in all_checklists %}
-                {% if checklist.visit == visit %}
-                    <p><a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-primary"><strong>A visit is scheduled for {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</strong></a></p>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-    {% else %}
-        <p>You have no upcoming visits.</p>
-    {% endif %}  
-</section>
-
+{% if my_pet_list %}
 <h2>Current Tasks For My Sitters</h2>
 <section>
     {% for pet in my_pet_list %}
@@ -69,5 +72,5 @@
         {% endfor %}
     {% endfor %}
 </section>
-
+{% endif %}
 {% endblock %} 

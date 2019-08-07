@@ -35,7 +35,7 @@ def index(request):
     return render(request, 'dashboard.html', context=context)
 
 def pet_detail(request,pk):
-
+    my_pet_list = Pet.objects.filter(owner=request.user)
     pet = Pet.objects.get(pk=pk)
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
@@ -62,7 +62,8 @@ def pet_detail(request,pk):
         'pet' : pet,
         'all_tasks': all_tasks,
         'all_checklists': all_checklists,
-        'pet_checklists': pet_checklists
+        'pet_checklists': pet_checklists,
+        'my_pet_list': my_pet_list,
     })
     
 

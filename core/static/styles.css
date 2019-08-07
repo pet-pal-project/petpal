@@ -25,7 +25,7 @@ body{
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding: 10px;
+  padding: 5px;
 }
 
 .pet-display-link{
