@@ -148,6 +148,17 @@ def new_pet_notification(request, user):
     return HttpResponse('Mail successfully sent')
 
 
+# def new_assignment_notification(request, user):
+#     send_mail(
+#         'You have been added to an assignment',
+#         f'Hi { user.username }, we are notifiying you that { user.username } has requested to add you to an visist. Please log in to view and accept.',
+#         'admin@critter-sitter.com',
+#         [f'{ user.email }'],
+#         fail_silently=False,
+#     )
+#     return render(request, 'email.html')
+#     return HttpResponse('Mail successfully sent')
+
 
 def sitter_arrived_notification(request, user):
     send_mail(
