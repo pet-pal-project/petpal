@@ -6,10 +6,26 @@
 
 <h1>{{user.user}}'s Profile </h1>
 
-{% if existing_contact %}
-    <p>You've already added this user as a contact.</p> 
-{% else %}
-    <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-primary">Add to Contacts</a></p>
+
+{% if request.user != user.user %}
+    {% if existing_contact %}
+        <p>You've already added this user as a contact.</p> 
+    {% else %}
+        <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-primary">Add to Contacts</a></p>
+    {% endif %}
 {% endif %}
 
+
+{% if request.user == user.user %}
+<div class="section">
+        <div id="new-q-form">
+            <h2>Update your profile below</h2>
+                <form action="{% url 'update-profile' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                    <button class="btn btn-success">Save Profile</button>
+                </form>
+        </div>
+</div>
+{% endif %}
 {% endblock %}

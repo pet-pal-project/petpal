@@ -1,14 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from core.models import Pet, Profile
+from core.models import Pet, Profile, Contact
 from django.forms import ModelForm
 import datetime
 from crispy_forms.layout import Layout, Submit, Row, Column
 from functools import partial
 
 class UserForm(forms.Form):
-    sitter = forms.ModelChoiceField(queryset=User.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['sitter'].queryset = Contact.objects.filter(user=user)
+
+    sitter = forms.ModelChoiceField(queryset=None, widget=forms.Select, required=True)
 
 
 class SignUpForm(UserCreationForm):
@@ -19,9 +25,6 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
-
-
-from django import forms
 
 
 class ProfileUpdateForm(forms.Form):
@@ -39,8 +42,6 @@ class ProfileForm(forms.ModelForm):
 
 class ChecklistForm(forms.Form):
     DateInput = partial(forms.DateInput, {'class': 'datepicker'})
-    # sitter = forms.CharField(max_length=50)
-    sitter = forms.ModelChoiceField(queryset=User.objects.all())
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
     task1 = forms.CharField(max_length=300, required=True)
