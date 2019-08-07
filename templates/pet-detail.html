@@ -87,6 +87,7 @@
 
 </section>
 
+{% if pet_checklists %}
 <h2>Checklist</h2>
 {% if request.user == pet.owner %}
 
@@ -161,4 +162,6 @@
 
 
 {% endif %}
+{% endif %}
+
 {% endblock %}
