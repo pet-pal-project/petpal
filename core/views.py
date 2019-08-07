@@ -34,6 +34,8 @@ def index(request):
     }
     return render(request, 'dashboard.html', context=context)
 
+
+@login_required
 def pet_detail(request,pk):
     my_pet_list = Pet.objects.filter(owner=request.user)
     pet = Pet.objects.get(pk=pk)
@@ -83,6 +85,7 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/registration_form.html', {'form': form})
 
+@login_required
 def add_checklist(request, pk):
     pet = get_object_or_404(Pet, pk=pk)
     if request.method == 'POST':
@@ -260,7 +263,7 @@ def update_profile(request):
         return render(request, 'update_profile.html', {'form': form})
 
 
-
+@login_required
 def add_a_pet(request):
     if request.method == 'POST':
         form = AddAPetForm(request.POST)
@@ -284,7 +287,7 @@ def add_a_pet(request):
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})
 
-
+@login_required
 def add_pet(request):
     if request.method == 'POST':
         form = AddAPetForm(request.POST, request.FILES)
@@ -303,7 +306,7 @@ def add_pet(request):
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})  
 
-
+@login_required
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=request.user.profile)
@@ -317,4 +320,20 @@ def profile(request):
         'form': form,
     }
     return render(request, 'update_profile.html', context)
+
+@login_required
+def edit_pet(request,pk):
+    pet = get_object_or_404(Pet, pk=pk)
+    if request.method == 'POST':
+        form = AddAPetForm(request.POST, instance=pet)
+        if form.is_valid():
+            form.save()
+            return redirect(to='home')
+    else:
+        form = AddAPetForm(instance=pet)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'edit_pet.html', context)
 

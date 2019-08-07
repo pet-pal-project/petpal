@@ -4,6 +4,8 @@
 <h1>Critter Profile: {{ pet.name }}</h1>
 {% if pet.owner == request.user %}
 <a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a>
+<a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit Critter</a>
+
 {% endif %}
 
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
@@ -38,10 +40,10 @@
 </div>
 {% endif %}
 
-{% if pet.weight %}
+{% if pet.weight_in_lbs %}
 <div class="info">
 <h3>Weight</h3>
-<p>{{ pet.weight }} lbs.</p>
+<p>{{ pet.weight_in_lbs }} lbs.</p>
 </div>
 {% endif %}
 
