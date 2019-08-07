@@ -424,3 +424,14 @@ def edit_pet(request,pk):
     }
     return render(request, 'edit_pet.html', context)
 
+
+
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+   
+
+        return render(request, 'profile.html', {
+        'user' : user,
+ 
+        })
+

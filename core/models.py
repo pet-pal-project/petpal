@@ -70,8 +70,8 @@ class Task (models.Model):
 
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # name = models.CharField(max_length=200, blank=False, help_text="Enter your first and last name")
-    home_phone= models.CharField(max_length=10, blank=True)
+    name = models.CharField(max_length=200, blank=True, help_text="Enter your first and last name")
+    phone = models.CharField(max_length=10, blank=True, help_text="Enter your main phone number")
     mobile_phone = models.CharField(max_length=10, blank=True)
     work_phone = models.CharField(max_length=10, blank=True)
 
@@ -86,3 +86,12 @@ class Profile (models.Model):
 
     def __str__(self):
         return f"{self.user}"
+
+class Contact (models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, blank=True)
+    phone = models.CharField(max_length=10, blank=True)
+    email = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return self.name
