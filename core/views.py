@@ -325,7 +325,7 @@ def profile(request):
 def edit_pet(request,pk):
     pet = get_object_or_404(Pet, pk=pk)
     if request.method == 'POST':
-        form = AddAPetForm(request.POST, instance=pet)
+        form = AddAPetForm(request.POST, request.FILES, instance=pet)
         if form.is_valid():
             form.save()
             return redirect(to='home')
