@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Pet Profile: {{ pet.name }}</h1>
+<h1>Critter Profile: {{ pet.name }}</h1>
 {% if pet.owner == request.user %}
-<a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a>
+<p><a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a></p>
+<p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit Critter</a></p>
+
 {% endif %}
 
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
@@ -13,55 +15,153 @@
 <section>
 
 <div class="info">
-<h2>Owner</h2>
+<h3>Owner</h3>
 <p>{{ pet.owner }}</p>
 </div>
 
+{% if pet.animal %}
 <div class="info">
-<h2>About Me</h2>
+<h3>Animal</h3>
+<p>{{ pet.animal }}</p>
+</div>
+{% endif %}
+
+{% if pet.age %}
+<div class="info">
+<h3>Age</h3>
+<p>{{ pet.age }}</p>
+</div>
+{% endif %}
+
+{% if pet.breed %}
+<div class="info">
+<h3>Breed</h3>
+<p>{{ pet.breed }}</p>
+</div>
+{% endif %}
+
+{% if pet.weight_in_lbs %}
+<div class="info">
+<h3>Weight</h3>
+<p>{{ pet.weight_in_lbs }} lbs.</p>
+</div>
+{% endif %}
+
+{% if pet.sex %}
+<div class="info">
+<h3>Sex</h3>
+<p>{{ pet.sex}}</p>
+</div>
+{% endif %}
+
+{% if pet.color_and_Markings %}
+<div class="info">
+<h3>Color and Markings</h3>
+<p>{{ pet.color_and_Markings }}</p>
+</div>
+{% endif %}
+
+
+{% if pet.about_Me %}
+<div class="info">
+<h3>About Me</h3>
 <p>{{ pet.about_Me }}</p>
 </div>
+{% endif %}
 
 {% if pet.vet_Info %}
 <div class="info">
-<h2>Vet Info</h2>
+<h3>Vet Info</h3>
 <p>{{ pet.vet_Info }}</p>
 </div>
 {% endif %}
 
+
+{% if pet.emergency_Contact %}
 <div class="info">
-<h2>Emergency Contact</h2>
+<h3>Emergency Contact</h3>
 <p>{{ pet.emergency_Contact }}</p>
 </div>
+{% endif %}
 
 
 </section>
 
+{% if pet_checklists %}
 <h2>Checklist</h2>
+{% if request.user == pet.owner %}
+
+
+        
+    
+            {% for checklist in all_checklists %}
+    
+                {% if checklist.pet_id == pet %}
+                <section>
+                <p><b>For {{ pet.name }} on {{ checklist.visit.due_date_on }} with pet sitter {{ checklist.visit.sitter_id }}</b></p>
+    
+                    {% for task in all_tasks %}
+                        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on and task.checklist_id.visit.sitter_id == checklist.visit.sitter_id  %}
+                                {% if task.completed_on %}
+                                <span>✔ "{{ task.description }}" completed on {{ task.completed_on }} by {{ checklist.visit.sitter_id }}</span<br>
+                                <p></p>
+                                {% else %}
+                                {{ task.description }}<br>
+                                <p></p>
+                                {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </section>  
+            {% endfor %}
+        
+ 
+
+
+
+
+{% else %}
+
+
+
+<!--  -->
 
 {% if pet_checklists %}
     {% for checklist in pet_checklists %}
-    <section>
-    <p><b>Things to do on {{ checklist.visit.due_date_on }}</b></p>
-    <form action="" method="POST">
-    {% csrf_token %}
-        {% for task in all_tasks %}
-        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on %}
-            {% if task.completed_on %}
-            <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
-            <p></p>
-            {% else %}
-            <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
-            <p></p>
-            {% endif %}
+        {% if request.user.username == checklist.visit.sitter_id %}
+            <section>
+            <p><b>Things to do on {{ checklist.visit.due_date_on }} by {{ checklist.visit.sitter_id }}</b></p>
+            <form action="" method="POST">
+            {% csrf_token %}
+                {% for task in all_tasks %}
+
+
+                        {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on and task.checklist_id.visit.sitter_id == request.user.username %} 
+                            
+                            {% if task.completed_on %}
+                                <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
+                                <p></p>
+                                {% else %}
+                                <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
+                                <p></p>
+                            {% endif %}
+
+
+                    {% endif %}
+
+                {% endfor %}
+            <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
+            </form> 
+            </section>  
         {% endif %}
-        {% endfor %}
-    <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
-    </form> 
-    </section>  
     {% endfor %}
 {% else %}
     <p>No checklists for this pet today.</p>
+{% endif %}
+
+
+
+{% endif %}
 {% endif %}
 
 {% endblock %}
