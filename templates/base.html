@@ -32,7 +32,7 @@
     <header class="base-header">
                     {% if request.user.is_authenticated %}
                     <div class="login-area">
-                      <p>Welcome, {{request.user}}! | <a href="{% url 'home' %}">Home</a> | <a href="/update">Profile</a> | <a href="/accounts/logout">Logout</a></p>
+                      <p>Welcome, {{request.user}}! | <a href="{% url 'home' %}">Home</a> | <a href="{% url 'profile' request.user.id %}">Profile</a> | <a href="/accounts/logout">Logout</a></p>
                     </div>
                       {% else %}
                     <div class="login-area">

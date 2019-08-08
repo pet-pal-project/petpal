@@ -37,7 +37,15 @@ urlpatterns += [
     path('addchecklist/<int:pk>', views.add_checklist, name='add-checklist'),
     path('add_pet/', views.add_pet, name='add-pet'),
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
+<<<<<<< HEAD
     
+=======
+    path('profile/<int:pk>', views.profile_page, name='profile'),
+    path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
+
+
+
+>>>>>>> c0c6a22768acc92cef3bae86094837d35e6e61f4
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

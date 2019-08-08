@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect
-from core.models import Pet, Visit, Checklist, Task, Profile
+from django.shortcuts import render, redirect, get_object_or_404
+from core.models import Pet, Visit, Checklist, Task, Profile, Contact
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
+<<<<<<< HEAD
 from django.http import HttpResponse
 from twilio.rest import Client
 import os
@@ -17,6 +18,11 @@ import datetime
 
 
 # Create your views here.  
+=======
+import datetime
+
+      
+>>>>>>> c0c6a22768acc92cef3bae86094837d35e6e61f4
 
 @login_required
 def index(request):
@@ -31,6 +37,7 @@ def index(request):
         'my_visits': my_visits,
         'all_checklists': all_checklists,
         'all_tasks': all_tasks,
+
     }
     return render(request, 'dashboard.html', context=context)
 
@@ -42,6 +49,8 @@ def pet_detail(request,pk):
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
     all_checklists = Checklist.objects.all()
+    permitted = Contact.objects.filter(name=request.user).filter(user=pet.owner)
+
 
     pet_tasks = []
 
@@ -80,6 +89,7 @@ def pet_detail(request,pk):
         'all_checklists': all_checklists,
         'pet_checklists': pet_checklists,
         'my_pet_list': my_pet_list,
+        'permitted': permitted,
     })
     
 
@@ -104,15 +114,21 @@ def add_checklist(request, pk):
     pet = get_object_or_404(Pet, pk=pk)
     if request.method == 'POST':
         form = ChecklistForm(request.POST)
-        if form.is_valid():
+        sitterform = UserForm(request.POST, user=request.user)
+        if form.is_valid() and sitterform.is_valid():
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
-            sitter = form.cleaned_data.get('sitter') 
+            sitter = sitterform.cleaned_data.get('sitter') 
             task1 = form.cleaned_data.get('task1')
             task2 = form.cleaned_data.get('task2')
             task3 = form.cleaned_data.get('task3')
             task4 = form.cleaned_data.get('task4')
             task5 = form.cleaned_data.get('task5')
+            task6 = form.cleaned_data.get('task6')
+            task7 = form.cleaned_data.get('task7')
+            task8 = form.cleaned_data.get('task8')
+            task9 = form.cleaned_data.get('task9')
+            task10 = form.cleaned_data.get('task10')
             print (start_date)
             print (end_date)
             delta = end_date - start_date
@@ -123,16 +139,38 @@ def add_checklist(request, pk):
                 if existing_visit:
                     visitpk = existing_visit[0]
                     new_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                    new_task1 = Task(description=task1, checklist_id=new_checklist[0])
-                    new_task1.save()
-                    new_task2 = Task(description=task2, checklist_id=new_checklist[0])
-                    new_task2.save()
-                    new_task3 = Task(description=task3, checklist_id=new_checklist[0])
-                    new_task3.save()
-                    new_task4 = Task(description=task4, checklist_id=new_checklist[0])
-                    new_task4.save()
-                    new_task5 = Task(description=task5, checklist_id=new_checklist[0])
-                    new_task5.save()
+                    if task1:
+                        new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                        new_task1.save()
+                    if task2:
+                        new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                        new_task2.save()
+                    if task3:
+                        new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                        new_task3.save()
+                    if task4:
+                        new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                        new_task4.save()
+                    if task5:
+                        new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                        new_task5.save()
+                    if task6:
+                        new_task6 = Task(description=task6, checklist_id=new_checklist[0])
+                        new_task6.save()
+                    if task7:
+                        new_task7 = Task(description=task7, checklist_id=new_checklist[0])
+                        new_task7.save()
+                    if task8:
+                        new_task8 = Task(description=task8, checklist_id=new_checklist[0])
+                        new_task8.save()
+                    if task9:
+                        new_task9 = Task(description=task9, checklist_id=new_checklist[0])
+                        new_task9.save()
+                    if task10:
+                        new_task10 = Task(description=task10, checklist_id=new_checklist[0])
+                        new_task10.save()
+                  
+
                     print("EXISTING VISIT WITH DATE AND USER")
                 else:
                     new_visit = Visit(sitter_id=sitter, due_date_on=start_date)    
@@ -140,16 +178,37 @@ def add_checklist(request, pk):
                     visit_id = new_visit.pk
                     new_checklist = Checklist(visit=new_visit, pet_id=pet)
                     new_checklist.save()
-                    new_task1 = Task(description=task1, checklist_id=new_checklist)
-                    new_task1.save()
-                    new_task2 = Task(description=task2, checklist_id=new_checklist)
-                    new_task2.save()
-                    new_task3 = Task(description=task3, checklist_id=new_checklist)
-                    new_task3.save()
-                    new_task4 = Task(description=task4, checklist_id=new_checklist)
-                    new_task4.save()
-                    new_task5 = Task(description=task5, checklist_id=new_checklist)
-                    new_task5.save()
+
+                    if task1:
+                        new_task1 = Task(description=task1, checklist_id=new_checklist)
+                        new_task1.save()
+                    if task2:
+                        new_task2 = Task(description=task2, checklist_id=new_checklist)
+                        new_task2.save()
+                    if task3:
+                        new_task3 = Task(description=task3, checklist_id=new_checklist)
+                        new_task3.save()
+                    if task4:
+                        new_task4 = Task(description=task4, checklist_id=new_checklist)
+                        new_task4.save()
+                    if task5:
+                        new_task5 = Task(description=task5, checklist_id=new_checklist)
+                        new_task5.save()
+                    if task6:
+                        new_task6 = Task(description=task6, checklist_id=new_checklist)
+                        new_task6.save()
+                    if task7:
+                        new_task7 = Task(description=task7, checklist_id=new_checklist)
+                        new_task7.save()
+                    if task8:
+                        new_task8 = Task(description=task8, checklist_id=new_checklist)
+                        new_task8.save()
+                    if task9:
+                        new_task9 = Task(description=task9, checklist_id=new_checklist)
+                        new_task9.save()
+                    if task10:
+                        new_task10 = Task(description=task10, checklist_id=new_checklist)
+                        new_task10.save()
                     print("A NEW VISIT WITH DATE AND USER")
             else:
                 for day in range(num_of_days+1):
@@ -159,34 +218,73 @@ def add_checklist(request, pk):
                 
                     if existing_visit:
                         visitpk = existing_visit[0]
-                        new_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                        new_task1 = Task(description=task1, checklist_id=new_checklist[0])
-                        new_task1.save()
-                        new_task2 = Task(description=task2, checklist_id=new_checklist[0])
-                        new_task2.save()
-                        new_task3 = Task(description=task3, checklist_id=new_checklist[0])
-                        new_task3.save()
-                        new_task4 = Task(description=task4, checklist_id=new_checklist[0])
-                        new_task4.save()
-                        new_task5 = Task(description=task5, checklist_id=new_checklist[0])
-                        new_task5.save()
-                        print("SAME DAY")
+                        if task1:
+                            new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                            new_task1.save()
+                        if task2:
+                            new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                            new_task2.save()
+                        if task3:
+                            new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                            new_task3.save()
+                        if task4:
+                            new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                            new_task4.save()
+                        if task5:
+                            new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                            new_task5.save()
+                        if task6:
+                            new_task6 = Task(description=task6, checklist_id=new_checklist[0])
+                            new_task6.save()
+                        if task7:
+                            new_task7 = Task(description=task7, checklist_id=new_checklist[0])
+                            new_task7.save()
+                        if task8:
+                            new_task8 = Task(description=task8, checklist_id=new_checklist[0])
+                            new_task8.save()
+                        if task9:
+                            new_task9 = Task(description=task9, checklist_id=new_checklist[0])
+                            new_task9.save()
+                        if task10:
+                            new_task10 = Task(description=task10, checklist_id=new_checklist[0])
+                            new_task10.save()
+                            print("SAME DAY")
                     else:
                         new_visit = Visit(sitter_id=sitter, due_date_on=current_date)    
                         new_visit.save()
                         visit_id = new_visit.pk
                         new_checklist = Checklist(visit=new_visit, pet_id=pet)
                         new_checklist.save()
-                        new_task1 = Task(description=task1, checklist_id=new_checklist)
-                        new_task1.save()
-                        new_task2 = Task(description=task2, checklist_id=new_checklist)
-                        new_task2.save()
-                        new_task3 = Task(description=task3, checklist_id=new_checklist)
-                        new_task3.save()
-                        new_task4 = Task(description=task4, checklist_id=new_checklist)
-                        new_task4.save()
-                        new_task5 = Task(description=task5, checklist_id=new_checklist)
-                        new_task5.save()
+                        if task1:
+                            new_task1 = Task(description=task1, checklist_id=new_checklist)
+                            new_task1.save()
+                        if task2:
+                            new_task2 = Task(description=task2, checklist_id=new_checklist)
+                            new_task2.save()
+                        if task3:
+                            new_task3 = Task(description=task3, checklist_id=new_checklist)
+                            new_task3.save()
+                        if task4:
+                            new_task4 = Task(description=task4, checklist_id=new_checklist)
+                            new_task4.save()
+                        if task5:
+                            new_task5 = Task(description=task5, checklist_id=new_checklist)
+                            new_task5.save()
+                        if task6:
+                            new_task6 = Task(description=task6, checklist_id=new_checklist)
+                            new_task6.save()
+                        if task7:
+                            new_task7 = Task(description=task7, checklist_id=new_checklist)
+                            new_task7.save()
+                        if task8:
+                            new_task8 = Task(description=task8, checklist_id=new_checklist)
+                            new_task8.save()
+                        if task9:
+                            new_task9 = Task(description=task9, checklist_id=new_checklist)
+                            new_task9.save()
+                        if task10:
+                            new_task10 = Task(description=task10, checklist_id=new_checklist)
+                            new_task10.save()
                         print("DIFFERENT DAYS")
 
 
@@ -195,8 +293,10 @@ def add_checklist(request, pk):
             return redirect('home')
     else:
         form = ChecklistForm()
+        sitterform = UserForm(user=request.user)
+
         
-    return render(request, 'add_checklist.html', {'form': form, 'pet' : pet,})
+    return render(request, 'add_checklist.html', {'form': form, 'pet' : pet, 'sitterform': sitterform})
 
 
 
@@ -352,3 +452,47 @@ def edit_pet(request,pk):
     return render(request, 'edit_pet.html', context)
 
 
+<<<<<<< HEAD
+=======
+
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                return redirect(to='home')
+        else:
+            form = ProfileForm(instance=request.user.profile)
+
+        
+        
+        return render(request, 'profile.html', {
+        'user' : user,
+        'existing_contact': existing_contact,
+        'form': form,
+        'user_contacts': user_contacts
+ 
+        })
+
+
+def contact_added(request,pk):
+        user = User.objects.get(id=pk)
+        contact_profile = Profile.objects.get(pk=pk)
+        mainuser = request.user
+        new_contact = Contact(user=mainuser, name=contact_profile.user.username, email=user.email)
+        new_contact.save()
+        pk = request.user.id
+        return redirect(to='profile', pk=pk)
+
+
+        return render(request, 'profile', {
+        'contact_profile': contact_profile,
+        'user': user,
+ 
+        })
+
+
+>>>>>>> c0c6a22768acc92cef3bae86094837d35e6e61f4
