@@ -8,7 +8,6 @@ from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
 from django.http import HttpResponseRedirect
-<<<<<<< HEAD
 from django.http import HttpResponse
 from twilio.rest import Client
 import os
@@ -18,11 +17,9 @@ import datetime
 
 
 # Create your views here.  
-=======
 import datetime
 
       
->>>>>>> c0c6a22768acc92cef3bae86094837d35e6e61f4
 
 @login_required
 def index(request):
@@ -452,8 +449,6 @@ def edit_pet(request,pk):
     return render(request, 'edit_pet.html', context)
 
 
-<<<<<<< HEAD
-=======
 
 def profile_page(request,pk):
         user = Profile.objects.get(pk=pk)
@@ -495,4 +490,3 @@ def contact_added(request,pk):
         })
 
 
->>>>>>> c0c6a22768acc92cef3bae86094837d35e6e61f4
