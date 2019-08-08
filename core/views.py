@@ -8,6 +8,15 @@ from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from twilio.rest import Client
+import os
+import environ
+
+import datetime
+
+
+# Create your views here.  
 import datetime
 
       
@@ -58,6 +67,20 @@ def pet_detail(request,pk):
             task_completed = Task.objects.get(id=task_id)
             task_completed.completed_on=datetime.datetime.now()
             task_completed.save()
+            account_sid = os.environ.get('account_sid')
+            auth_token = os.environ.get('auth_token')
+            client = Client(account_sid, auth_token)
+
+            message = client.messages \
+                .create(
+                    body='Your sitter has checked out!',
+                    from_='+19842144116',
+                    to='+19192594909',
+                )
+
+            print(message.sid)
+        
+
         return HttpResponseRedirect(request.path_info)
 
     return render(request, 'pet-detail.html', {

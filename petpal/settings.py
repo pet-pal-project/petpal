@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'core',
     'crispy_forms',
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -171,7 +172,7 @@ DEBUG = not in_production
 
 # Email configurations:
 
-DEFAULT_FROM_EMAIL = 'amanda.minton@gmail.com'
+DEFAULT_FROM_EMAIL = 'MomentumCritter@gmail.com'
 
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
