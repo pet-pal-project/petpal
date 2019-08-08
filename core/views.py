@@ -74,9 +74,9 @@ def pet_detail(request,pk):
 
             message = client.messages \
                 .create(
-                    body=f'Hi { user.username }, { pet.name }'s care list has been submitted! Login to your account to view the details: https://petz-app.herokuapp.com!', 
+                    body=f"Hi { user.username }, { pet.name }'s care list has been submitted! Login to your account to view the details: https://petz-app.herokuapp.com!", 
                     from_='+19842144116',
-                    to='{ owner.phone }',
+                    to=f'{ owner.phone }',
                 )
 
             print(message.sid)
