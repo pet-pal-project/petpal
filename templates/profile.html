@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h1>{{user.user}}'s Profile </h1>
+
+
+{% if request.user != user.user %}
+    {% if existing_contact %}
+        <p>You've already added this user as a contact.</p> 
+    {% else %}
+        <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-primary">Add to Contacts</a></p>
+        <p>Adding this user grants them permission to view your all of your critter profiles and allows you to add them as a sitter for future visits.</p>
+    {% endif %}
+{% endif %}
+
+
+
+
+
+{% if request.user == user.user %}
+
+<h2>Contacts</h2>
+{% for contact in user_contacts %}
+    <p>{{ contact.name }}</p>
+{% endfor %}
+
+<div class="section">
+        <div id="new-q-form">
+            <h2>Update your profile below</h2>
+                <form action="{% url 'update-profile' %}" method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                    <button class="btn btn-success">Save Profile</button>
+                </form>
+        </div>
+</div>
+{% endif %}
+{% endblock %}

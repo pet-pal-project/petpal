@@ -1,22 +1,16 @@
-from django.shortcuts import render, redirect
-from core.models import Pet, Visit, Checklist, Task, Profile
+from django.shortcuts import render, redirect, get_object_or_404
+from core.models import Pet, Visit, Checklist, Task, Profile, Contact
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
 from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
-from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 import datetime
 
-
-
-
-# Create your views here.
-
-
-        
+      
 
 @login_required
 def index(request):
@@ -31,6 +25,7 @@ def index(request):
         'my_visits': my_visits,
         'all_checklists': all_checklists,
         'all_tasks': all_tasks,
+
     }
     return render(request, 'dashboard.html', context=context)
 
@@ -42,6 +37,8 @@ def pet_detail(request,pk):
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
     all_checklists = Checklist.objects.all()
+    permitted = Contact.objects.filter(name=request.user).filter(user=pet.owner)
+
 
     pet_tasks = []
 
@@ -66,6 +63,7 @@ def pet_detail(request,pk):
         'all_checklists': all_checklists,
         'pet_checklists': pet_checklists,
         'my_pet_list': my_pet_list,
+        'permitted': permitted,
     })
     
 
@@ -90,10 +88,11 @@ def add_checklist(request, pk):
     pet = get_object_or_404(Pet, pk=pk)
     if request.method == 'POST':
         form = ChecklistForm(request.POST)
-        if form.is_valid():
+        sitterform = UserForm(request.POST, user=request.user)
+        if form.is_valid() and sitterform.is_valid():
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
-            sitter = form.cleaned_data.get('sitter') 
+            sitter = sitterform.cleaned_data.get('sitter') 
             task1 = form.cleaned_data.get('task1')
             task2 = form.cleaned_data.get('task2')
             task3 = form.cleaned_data.get('task3')
@@ -268,8 +267,10 @@ def add_checklist(request, pk):
             return redirect('home')
     else:
         form = ChecklistForm()
+        sitterform = UserForm(user=request.user)
+
         
-    return render(request, 'add_checklist.html', {'form': form, 'pet' : pet,})
+    return render(request, 'add_checklist.html', {'form': form, 'pet' : pet, 'sitterform': sitterform})
 
 
 
@@ -423,4 +424,46 @@ def edit_pet(request,pk):
         'form': form,
     }
     return render(request, 'edit_pet.html', context)
+
+
+
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                return redirect(to='home')
+        else:
+            form = ProfileForm(instance=request.user.profile)
+
+        
+        
+        return render(request, 'profile.html', {
+        'user' : user,
+        'existing_contact': existing_contact,
+        'form': form,
+        'user_contacts': user_contacts
+ 
+        })
+
+
+def contact_added(request,pk):
+        user = User.objects.get(id=pk)
+        contact_profile = Profile.objects.get(pk=pk)
+        mainuser = request.user
+        new_contact = Contact(user=mainuser, name=contact_profile.user.username, email=user.email)
+        new_contact.save()
+        pk = request.user.id
+        return redirect(to='profile', pk=pk)
+
+
+        return render(request, 'profile', {
+        'contact_profile': contact_profile,
+        'user': user,
+ 
+        })
+
 

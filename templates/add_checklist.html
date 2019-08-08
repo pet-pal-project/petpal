@@ -5,7 +5,7 @@
   <form action="" method="post">
     {% csrf_token %}
     <table>
-    {{ userform|crispy }}
+    {{ sitterform|crispy }}
     {{ form|crispy }}
     </table>
     <input type="submit" value="Submit">
