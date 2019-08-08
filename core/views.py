@@ -63,11 +63,8 @@ def pet_detail(request,pk):
         user = request.user
         tasks = tasks_checked
         sitter_departed_notification(request, user, tasks)
-        for task_checked in tasks_checked:
-            task_id = int(task_checked)
-            task_completed = Task.objects.get(id=task_id)
-            task_completed.completed_on=datetime.datetime.now()
-            task_completed.save()
+
+        if tasks_checked:
             account_sid = os.environ.get('account_sid')
             auth_token = os.environ.get('auth_token')
             client = Client(account_sid, auth_token)
@@ -79,9 +76,13 @@ def pet_detail(request,pk):
                     to=f'{ owner.phone }',
                 )
 
-            print(message.sid)
+        for task_checked in tasks_checked:
+            task_id = int(task_checked)
+            task_completed = Task.objects.get(id=task_id)
+            task_completed.completed_on=datetime.datetime.now()
+            task_completed.save()
+            
         
-
         return HttpResponseRedirect(request.path_info)
 
     return render(request, 'pet-detail.html', {
