@@ -59,6 +59,9 @@ def pet_detail(request,pk):
 
     if request.method == 'POST':
         tasks_checked = request.POST.getlist('task')
+        user = request.user
+        tasks = tasks_checked
+        sitter_departed_notification(request, user, tasks)
         for task_checked in tasks_checked:
             task_id = int(task_checked)
             task_completed = Task.objects.get(id=task_id)
@@ -300,64 +303,81 @@ def add_checklist(request, pk):
 def new_pet_notification(request, user):
     send_mail(
         'You have created a new animal profile.',
-        f'Hi { user.username }, we are notifiying you that your a new animal profile has been successfully created!',
+        f'Hi { user.username }, we are notifiying you that you have successfully created a new animal profile!',
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
     )
-
     return render(request, 'email.html')
-    
     return HttpResponse('Mail successfully sent')
 
 
+# """ Notification to Sitter requesting visit acceptance."""
+# def new_assignment_notification(request, user):
+#     send_mail(
+#         'New Assignment',
+#         f'Hi { user.username }, we are notifiying you that { user.username } has requested to add you to an visist. Please log in to view and accept.',
+#         'admin@critter-sitter.com',
+#         [f'{ user.email }'],
+#         fail_silently=False,
+#     )
+#     return render(request, 'email.html')
+#     return HttpResponse('Mail successfully sent')
 
-def sitter_arrived(request):
+
+# """ Notification to Owner that the Sitter has arrived for their visit."""
+# def sitter_arrived_notification(request, user):
+#     send_mail(
+#         'Your sitter has arrived.',
+#          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
+#         'admin@critter-sitter.com',
+#         [f'{ user.email }'],
+#         fail_silently=False,
+#     )
+#     return render(request, 'email.html')
+#     return HttpResponse('Mail successfully sent')
+
+
+
+""" Notification to Owner that Sitter has checked out from their visit. Should include a list of completed tasks for that visit."""
+def sitter_departed_notification(request, user, tasks):
+    tasks = tasks
     send_mail(
-        'Your sitter has arrived.',
-         f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
+        'Visit for today marked complete.',
+         f'Hi { user.username }, we are notifiying you that your sitter, { user.username } , has successfully checked out from their visit today. Log in to account to view details: https://petz-app.herokuapp.com', 
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
     )
-
+    return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
 
 
-def sitter_departed(request):
-    send_mail(
-        'Visit for today is complete.',
-         f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked out from their visit today. To reveiew their completed tasks, click here',
-        'admin@critter-sitter.com',
-        [f'{ user.email }'],
-        fail_silently=False,
-    )
-
-    return HttpResponse('Mail successfully sent')
-
-
-def critical_task_missed(request):
-    send_mail(
-        'Critical task for today NOT marked complete.',
-         f'Hi { user.username }, we are notifiying you that our system does not yet have a record of a critical task being marked complete for the visit today. To reveiew tasks, please click here',
-        'admin@critter-sitter.com',
-        [f'{ user.email }'],
-        fail_silently=False,
-    )
-
-    return HttpResponse('Mail successfully sent')
+# """ For tasks marked as time-sensitive, that are not completed within the time allowed, a notification should be sent."""
+# def critical_task_missed(request, user):
+#     send_mail(
+#         'Critical task for today NOT marked complete.',
+#          f'Hi { user.username }, we are notifiying you that our system does not yet have a record of a critical task being marked complete for the visit today.',
+#         'admin@critter-sitter.com',
+#         [f'{ user.email }'],
+#         fail_silently=False,
+#     )
+#     return render(request, 'email.html')
+#     return HttpResponse('Mail successfully sent')
 
 
-def critical_task_complete(request):
-    send_mail(
-        'Your sitter has completed a critical task for today.',
-         f'Hi { user.username }, we are notifiying you that our system shows sitter has marked  a critical task complete for the visit today. To reveiew tasks, please click here',
-        'admin@critter-sitter.com',
-        [f'{ user.email }'],
-        fail_silently=False,
-    )
+# """ Once a time-sensitive task is marked as complete, a notification should be sent."""
+# def critical_task_complete(request, user):
+#     send_mail(
+#         'Your sitter has completed a critical task for today.',
+#          f'Hi { user.username }, we are notifiying you that our system shows sitter has marked  a critical task complete for the visit today.',
+#         'admin@critter-sitter.com',
+#         [f'{ user.email }'],
+#         fail_silently=False,
+#     )
+#     return render(request, 'email.html')
+#     return HttpResponse('Mail successfully sent')
 
-    return HttpResponse('Mail successfully sent')
 
 @login_required
 def update_profile(request):
@@ -398,6 +418,7 @@ def add_a_pet(request):
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})
 
+
 @login_required
 def add_pet(request):
     if request.method == 'POST':
@@ -417,6 +438,7 @@ def add_pet(request):
         form = AddAPetForm()
     return render(request, 'add_pet.html', {'form': form})  
 
+
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -431,6 +453,7 @@ def profile(request):
         'form': form,
     }
     return render(request, 'update_profile.html', context)
+
 
 @login_required
 def edit_pet(request,pk):
