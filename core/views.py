@@ -430,6 +430,7 @@ def edit_pet(request,pk):
 def profile_page(request,pk):
         user = Profile.objects.get(pk=pk)
         existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
         if request.method == 'POST':
             form = ProfileForm(request.POST, instance=request.user.profile)
             if form.is_valid():
@@ -444,6 +445,7 @@ def profile_page(request,pk):
         'user' : user,
         'existing_contact': existing_contact,
         'form': form,
+        'user_contacts': user_contacts
  
         })
 
@@ -454,8 +456,11 @@ def contact_added(request,pk):
         mainuser = request.user
         new_contact = Contact(user=mainuser, name=contact_profile.user.username, email=user.email)
         new_contact.save()
+        pk = request.user.id
+        return redirect(to='profile', pk=pk)
 
-        return render(request, 'contact-added.html', {
+
+        return render(request, 'profile', {
         'contact_profile': contact_profile,
         'user': user,
  
