@@ -43,7 +43,8 @@ def index(request):
 def pet_detail(request,pk):
     my_pet_list = Pet.objects.filter(owner=request.user)
     pet = Pet.objects.get(pk=pk)
-    owner = Profile.objects.filter(user=pet.owner)
+    owner = Profile.objects.get(user=pet.owner)
+    print(owner.phone)
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
     all_checklists = Checklist.objects.all()
