@@ -10,17 +10,18 @@ from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetFor
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
+<<<<<<< HEAD
 from django.views.generic import TemplateView
+=======
+from django.contrib import messages
+>>>>>>> 010ae9cd3796f3b5f20f3d7cdd57a569a5bf0264
 import os
 import environ
-
 import datetime
 
 
 # Create your views here.  
-import datetime
 
-      
 
 @login_required
 def index(request):
@@ -141,36 +142,38 @@ def add_checklist(request, pk):
             if delta.days == 0:
                 if existing_visit:
                     visitpk = existing_visit[0]
-                    new_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
+                    Checklist.objects
+                    existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
+                    checklist = existing_checklist[0]
                     if task1:
-                        new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                        new_task1 = Task(description=task1, checklist_id=checklist)
                         new_task1.save()
                     if task2:
-                        new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                        new_task2 = Task(description=task2, checklist_id=new_checklist)
                         new_task2.save()
                     if task3:
-                        new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                        new_task3 = Task(description=task3, checklist_id=new_checklist)
                         new_task3.save()
                     if task4:
-                        new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                        new_task4 = Task(description=task4, checklist_id=new_checklist)
                         new_task4.save()
                     if task5:
-                        new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                        new_task5 = Task(description=task5, checklist_id=new_checklist)
                         new_task5.save()
                     if task6:
-                        new_task6 = Task(description=task6, checklist_id=new_checklist[0])
+                        new_task6 = Task(description=task6, checklist_id=new_checklist)
                         new_task6.save()
                     if task7:
-                        new_task7 = Task(description=task7, checklist_id=new_checklist[0])
+                        new_task7 = Task(description=task7, checklist_id=new_checklist)
                         new_task7.save()
                     if task8:
-                        new_task8 = Task(description=task8, checklist_id=new_checklist[0])
+                        new_task8 = Task(description=task8, checklist_id=new_checklist)
                         new_task8.save()
                     if task9:
-                        new_task9 = Task(description=task9, checklist_id=new_checklist[0])
+                        new_task9 = Task(description=task9, checklist_id=new_checklist)
                         new_task9.save()
                     if task10:
-                        new_task10 = Task(description=task10, checklist_id=new_checklist[0])
+                        new_task10 = Task(description=task10, checklist_id=new_checklist)
                         new_task10.save()
                   
 
@@ -221,35 +224,38 @@ def add_checklist(request, pk):
                 
                     if existing_visit:
                         visitpk = existing_visit[0]
+                        Checklist.objects
+                        existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
+                        checklist = existing_checklist[0]
                         if task1:
-                            new_task1 = Task(description=task1, checklist_id=new_checklist[0])
+                            new_task1 = Task(description=task1, checklist_id=checklist)
                             new_task1.save()
                         if task2:
-                            new_task2 = Task(description=task2, checklist_id=new_checklist[0])
+                            new_task2 = Task(description=task2, checklist_id=checklist)
                             new_task2.save()
                         if task3:
-                            new_task3 = Task(description=task3, checklist_id=new_checklist[0])
+                            new_task3 = Task(description=task3, checklist_id=checklist)
                             new_task3.save()
                         if task4:
-                            new_task4 = Task(description=task4, checklist_id=new_checklist[0])
+                            new_task4 = Task(description=task4, checklist_id=checklist)
                             new_task4.save()
                         if task5:
-                            new_task5 = Task(description=task5, checklist_id=new_checklist[0])
+                            new_task5 = Task(description=task5, checklist_id=checklist)
                             new_task5.save()
                         if task6:
-                            new_task6 = Task(description=task6, checklist_id=new_checklist[0])
+                            new_task6 = Task(description=task6, checklist_id=checklist)
                             new_task6.save()
                         if task7:
-                            new_task7 = Task(description=task7, checklist_id=new_checklist[0])
+                            new_task7 = Task(description=task7, checklist_id=checklist)
                             new_task7.save()
                         if task8:
-                            new_task8 = Task(description=task8, checklist_id=new_checklist[0])
+                            new_task8 = Task(description=task8, checklist_id=checklist)
                             new_task8.save()
                         if task9:
-                            new_task9 = Task(description=task9, checklist_id=new_checklist[0])
+                            new_task9 = Task(description=task9, checklist_id=checklist)
                             new_task9.save()
                         if task10:
-                            new_task10 = Task(description=task10, checklist_id=new_checklist[0])
+                            new_task10 = Task(description=task10, checklist_id=checklist)
                             new_task10.save()
                             print("SAME DAY")
                     else:
@@ -442,21 +448,32 @@ def add_pet(request):
     return render(request, 'add_pet.html', {'form': form})  
 
 
+
 @login_required
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect(to='home')
-    else:
-        form = ProfileForm(instance=request.user.profile)
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your profile was updated successfully!')
+                pk = request.user.id
+                return redirect(to='profile', pk=pk)
 
-    context = {
+        else:
+            form = ProfileForm(instance=request.user.profile)
+
+        
+        
+        return render(request, 'profile.html', {
+        'user' : user,
+        'existing_contact': existing_contact,
         'form': form,
-    }
-    return render(request, 'update_profile.html', context)
-
+        'user_contacts': user_contacts,
+ 
+        })
 
 @login_required
 def edit_pet(request,pk):
@@ -471,32 +488,11 @@ def edit_pet(request,pk):
 
     context = {
         'form': form,
+        'pet': pet,
     }
     return render(request, 'edit_pet.html', context)
 
 
-
-def profile_page(request,pk):
-        user = Profile.objects.get(pk=pk)
-        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
-        user_contacts = Contact.objects.filter(user=request.user)
-        if request.method == 'POST':
-            form = ProfileForm(request.POST, instance=request.user.profile)
-            if form.is_valid():
-                form.save()
-                return redirect(to='home')
-        else:
-            form = ProfileForm(instance=request.user.profile)
-
-        
-        
-        return render(request, 'profile.html', {
-        'user' : user,
-        'existing_contact': existing_contact,
-        'form': form,
-        'user_contacts': user_contacts
- 
-        })
 
 
 def contact_added(request,pk):
@@ -514,3 +510,41 @@ def contact_added(request,pk):
         'user': user,
  
         })
+
+
+@login_required
+def delete_pet(request,pk):
+    pet = get_object_or_404(Pet, pk=pk)
+    name = pet.name
+    if request.method == 'POST':
+        existing_visits = Checklist.objects.filter(pet_id=pet)
+        for existing_visit in existing_visits:
+            select_visit = existing_visit.visit
+            Visit.objects.filter(id=select_visit.pk).delete()
+        Pet.objects.filter(name=pet.name).delete()
+        messages.success(request, 'Critter profile has been removed')
+        return redirect(to='home')
+  
+    context = {
+       'pet': pet,
+    }
+    return render(request, 'delete-pet.html', context)
+
+@login_required
+def delete_account(request,pk):
+    user = Profile.objects.get(pk=pk)
+    if request.method == 'POST':
+        user_id = User.objects.get(pk=pk)
+        pets = Pet.objects.filter(owner=request.user)
+        for pet in pets:
+            existing_visits = Checklist.objects.filter(pet_id=pet)
+            for existing_visit in existing_visits:
+                select_visit = existing_visit.visit
+                Visit.objects.filter(id=select_visit.pk).delete()
+        User.objects.filter(id=user_id.pk).delete()
+        return redirect(to='/accounts/login')
+  
+    context = {
+       'user': user,
+    }
+    return render(request, 'delete-account.html', context)

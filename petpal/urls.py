@@ -34,13 +34,17 @@ urlpatterns += [
     path('dashboard/', views.index, name='home'),
     path('pet/<int:pk>', views.pet_detail, name='pet-detail'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    path('update/', views.profile, name='update-profile'),
+    path('profile/<int:pk>', views.profile_page, name='profile'),
     path('addchecklist/<int:pk>', views.add_checklist, name='add-checklist'),
     path('add_pet/', views.add_pet, name='add-pet'),
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
-    path('profile/<int:pk>', views.profile_page, name='profile'),
     path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('delete-pet/<int:pk>', views.delete_pet, name='delete-pet'),
+    path('delete-account/<int:pk>', views.delete_account, name='delete-account'),
+
+
+
 ]
 
 # Use static() to add url mapping to serve static files during development (only)
