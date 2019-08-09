@@ -508,6 +508,14 @@ def contact_added(request,pk):
 @login_required
 def delete_pet(request,pk):
     pet = get_object_or_404(Pet, pk=pk)
+    name = pet.name
+    if request.method == 'POST':
+        existing_visits = Checklist.objects.filter(pet_id=pet)
+        for existing_visit in existing_visits:
+            select_visit = existing_visit.visit
+            Visit.objects.filter(id=select_visit.pk).delete()
+        Pet.objects.filter(name=pet.name).delete()
+        return redirect(to='home')
   
     context = {
        'pet': pet,

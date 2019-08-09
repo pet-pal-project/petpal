@@ -42,7 +42,6 @@ urlpatterns += [
 
 
 
-
 ]
 
 # Use static() to add url mapping to serve static files during development (only)
