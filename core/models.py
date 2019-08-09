@@ -17,7 +17,7 @@ class Pet (models.Model):
     color_and_Markings = models.CharField(max_length=200, blank=True)
     age = models.CharField(max_length=4, null=True, blank=True)
     profile_Image = models.ImageField(upload_to="pet_pictures", blank=True)
-    owner = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="pet_owner")
+    owner = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True, related_name="pet_owner")
     about_Me = models.TextField(max_length=2000, help_text="Tell us about your pet (likes, dislikes, fun quirks, and more).", null=True, blank=True)
     vet_Info = models.TextField(max_length=2000, help_text="Enter your pet's vet info (name, address, and contact number).", null=True, blank=True)
     emergency_Contact = models.TextField(max_length=2000, help_text="Someone other than yourself in the case of emergencies (enter their name, number, and email).", null=True, blank=True)
@@ -42,7 +42,7 @@ class Checklist (models.Model):
 
 class Task (models.Model):
     description = models.TextField(null=False, blank=False)
-    checklist_id = models.ForeignKey(Checklist, on_delete=models.SET_NULL, null=True) 
+    checklist_id = models.ForeignKey(Checklist, on_delete=models.CASCADE, null=True) 
     completed_on = models.DateTimeField(null=True, blank=True)
 
     
