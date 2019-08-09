@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include, url  # For django versions before 2.0
 from django.urls import include, path  # For django versions from 2.0 and up
+from django.contrib.auth import views as auth_views
 from core import views
 
 urlpatterns = [
@@ -39,10 +40,7 @@ urlpatterns += [
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
     path('profile/<int:pk>', views.profile_page, name='profile'),
     path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
-    # path('login/', auth_views.LoginView.as_view(), name='login'),
-    # path('logout/', auth_views.LogOutView.as_view(), name='logout'),
-
-
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
 ]
 
 # Use static() to add url mapping to serve static files during development (only)

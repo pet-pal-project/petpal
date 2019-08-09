@@ -1,9 +1,16 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
 
 
+<div id="login">
 
-<h2> You have successfully logged out. </h2>
+    <h1>You have successfully logged out.</h1>
 
-<p>
-    <a href="{% url '/login' %}"> Log In Again</a>
-</p>
+</div>
 
+{% endblock %}

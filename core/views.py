@@ -10,6 +10,7 @@ from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetFor
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
+from django.views.generic import TemplateView
 import os
 import environ
 
@@ -513,5 +514,3 @@ def contact_added(request,pk):
         'user': user,
  
         })
-
-
