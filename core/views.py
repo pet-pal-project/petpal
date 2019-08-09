@@ -10,14 +10,14 @@ from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetFor
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
+from django.contrib import messages
 import os
 import environ
-
 import datetime
 
 
 # Create your views here.  
-import datetime
+
 
       
 
@@ -43,7 +43,7 @@ def index(request):
 def pet_detail(request,pk):
     my_pet_list = Pet.objects.filter(owner=request.user)
     pet = Pet.objects.get(pk=pk)
-    owner = Profile.objects.filter(user=pet.owner)
+    owner = Profile.objects.get(user=pet.owner)
     pet_checklists = Checklist.objects.filter(pet_id=pet)
     all_tasks = Task.objects.all()
     all_checklists = Checklist.objects.all()
@@ -63,25 +63,30 @@ def pet_detail(request,pk):
         user = request.user
         tasks = tasks_checked
         sitter_departed_notification(request, user, tasks)
-        for task_checked in tasks_checked:
-            task_id = int(task_checked)
-            task_completed = Task.objects.get(id=task_id)
-            task_completed.completed_on=datetime.datetime.now()
-            task_completed.save()
+
+        if tasks_checked:
             account_sid = os.environ.get('account_sid')
             auth_token = os.environ.get('auth_token')
             client = Client(account_sid, auth_token)
 
             message = client.messages \
                 .create(
+<<<<<<< HEAD
                     body=f"Hi { user.username }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
+=======
+                    body=f"Hi { pet.owner }, { pet.name }'s care list has been submitted! Login to your account to view the details: https://petz-app.herokuapp.com!", 
+>>>>>>> c9d6f3e6b651354d3323f9620560f87f0ba42ee6
                     from_='+19842144116',
                     to=f'{ owner.phone }',
                 )
 
-            print(message.sid)
+        for task_checked in tasks_checked:
+            task_id = int(task_checked)
+            task_completed = Task.objects.get(id=task_id)
+            task_completed.completed_on=datetime.datetime.now()
+            task_completed.save()
+            
         
-
         return HttpResponseRedirect(request.path_info)
 
     return render(request, 'pet-detail.html', {
@@ -440,21 +445,32 @@ def add_pet(request):
     return render(request, 'add_pet.html', {'form': form})  
 
 
+
 @login_required
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect(to='home')
-    else:
-        form = ProfileForm(instance=request.user.profile)
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your profile was updated successfully!')
+                pk = request.user.id
+                return redirect(to='profile', pk=pk)
 
-    context = {
+        else:
+            form = ProfileForm(instance=request.user.profile)
+
+        
+        
+        return render(request, 'profile.html', {
+        'user' : user,
+        'existing_contact': existing_contact,
         'form': form,
-    }
-    return render(request, 'update_profile.html', context)
-
+        'user_contacts': user_contacts,
+ 
+        })
 
 @login_required
 def edit_pet(request,pk):
@@ -469,32 +485,11 @@ def edit_pet(request,pk):
 
     context = {
         'form': form,
+        'pet': pet,
     }
     return render(request, 'edit_pet.html', context)
 
 
-
-def profile_page(request,pk):
-        user = Profile.objects.get(pk=pk)
-        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
-        user_contacts = Contact.objects.filter(user=request.user)
-        if request.method == 'POST':
-            form = ProfileForm(request.POST, instance=request.user.profile)
-            if form.is_valid():
-                form.save()
-                return redirect(to='home')
-        else:
-            form = ProfileForm(instance=request.user.profile)
-
-        
-        
-        return render(request, 'profile.html', {
-        'user' : user,
-        'existing_contact': existing_contact,
-        'form': form,
-        'user_contacts': user_contacts
- 
-        })
 
 
 def contact_added(request,pk):
@@ -514,3 +509,39 @@ def contact_added(request,pk):
         })
 
 
+@login_required
+def delete_pet(request,pk):
+    pet = get_object_or_404(Pet, pk=pk)
+    name = pet.name
+    if request.method == 'POST':
+        existing_visits = Checklist.objects.filter(pet_id=pet)
+        for existing_visit in existing_visits:
+            select_visit = existing_visit.visit
+            Visit.objects.filter(id=select_visit.pk).delete()
+        Pet.objects.filter(name=pet.name).delete()
+        messages.success(request, 'Critter profile has been removed')
+        return redirect(to='home')
+  
+    context = {
+       'pet': pet,
+    }
+    return render(request, 'delete-pet.html', context)
+
+@login_required
+def delete_account(request,pk):
+    user = Profile.objects.get(pk=pk)
+    if request.method == 'POST':
+        user_id = User.objects.get(pk=pk)
+        pets = Pet.objects.filter(owner=request.user)
+        for pet in pets:
+            existing_visits = Checklist.objects.filter(pet_id=pet)
+            for existing_visit in existing_visits:
+                select_visit = existing_visit.visit
+                Visit.objects.filter(id=select_visit.pk).delete()
+        User.objects.filter(id=user_id.pk).delete()
+        return redirect(to='/accounts/login')
+  
+    context = {
+       'user': user,
+    }
+    return render(request, 'delete-account.html', context)

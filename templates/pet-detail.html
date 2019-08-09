@@ -7,7 +7,7 @@
 
         {% if pet.owner == request.user %}
         <p><a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a></p>
-        <p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit Critter</a></p>
+        <p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit or Remove Critter Profile</a></p>
         {% endif %}
 
         <!-- <button type="button" class="button-lg">Pet Pal</button> -->
@@ -85,6 +85,8 @@
         </div>
         {% endif %}
 
+    
+
         </section>
         {% if pet_checklists %}
         <h2>Checklist</h2>
@@ -161,6 +163,7 @@
         {% endif %}
 
         {% endif %}
+
 
 {% else %}
     <p>You are not authorized to view this pet's page</p>

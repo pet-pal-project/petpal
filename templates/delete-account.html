@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+{% if request.user == user.user %}
+<h1>Confirm deletion of your account</h1>
+<p>Are you sure you want to delete your account? You'll lose all critter profile data.</p>
+<br>
+<form method="POST">
+{% csrf_token %}
+<button type="submit" class="btn btn-danger">Yes, delete my account.</button>
+</form>
+<br>
+<p><a href="{% url 'profile' request.user.id %}" class="btn btn-outline-info">No, go back.</a></p>
+
+
+{% else %}
+<h1>Not Authorized</h1>
+<p>You are not authorized to view this page.</p>
+
+
+{% endif %}
+
+{% endblock %}
