@@ -4,15 +4,21 @@
 
 
 {% block content %}
-<h1>Edit Critter</h1>
+<h1>Edit {{ pet.name }}'s Profile</h1>
 <div id="add-pet-form">
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %%}
     {{ form|crispy }}
-    <button type="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="btn btn-success">Save Critter Profile</button>
   </form>
 
+</div>
+<br>
+<div>
+{% if pet.owner == request.user %}
+    <p><a href="{% url 'delete-pet' pet.id %}" class="btn btn-danger">Remove Critter Profile</a></p>
+{% endif %}
 </div>
 
 {% endblock %}

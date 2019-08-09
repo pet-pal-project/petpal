@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+{% if request.user == pet.owner %}
+<h1>Confirm removal of critter profile</h1>
+<p>Are you sure you want to remove the critter profile for {{ pet.name }}?</p>
+<br>
+<p><a href="{% url 'delete-pet' pet.id %}" class="btn btn-danger">Yes, remove critter profile.</a></p>
+<br>
+<p><a href="{% url 'delete-pet' pet.id %}" class="btn btn-outline-info">No, go back.</a></p>
+
+
+{% else %}
+<h1>Not Authorized</h1>
+<p>You are not authorized to view this page.</p>
+
+
+{% endif %}
+
+{% endblock %}

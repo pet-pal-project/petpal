@@ -10,14 +10,14 @@ from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetFor
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
+from django.contrib import messages
 import os
 import environ
-
 import datetime
 
 
 # Create your views here.  
-import datetime
+
 
       
 
@@ -441,21 +441,32 @@ def add_pet(request):
     return render(request, 'add_pet.html', {'form': form})  
 
 
+
 @login_required
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect(to='home')
-    else:
-        form = ProfileForm(instance=request.user.profile)
+def profile_page(request,pk):
+        user = Profile.objects.get(pk=pk)
+        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
+        user_contacts = Contact.objects.filter(user=request.user)
+        if request.method == 'POST':
+            form = ProfileForm(request.POST, instance=request.user.profile)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your profile was updated successfully!')
+                pk = request.user.id
+                return redirect(to='profile', pk=pk)
 
-    context = {
+        else:
+            form = ProfileForm(instance=request.user.profile)
+
+        
+        
+        return render(request, 'profile.html', {
+        'user' : user,
+        'existing_contact': existing_contact,
         'form': form,
-    }
-    return render(request, 'update_profile.html', context)
-
+        'user_contacts': user_contacts,
+ 
+        })
 
 @login_required
 def edit_pet(request,pk):
@@ -470,32 +481,11 @@ def edit_pet(request,pk):
 
     context = {
         'form': form,
+        'pet': pet,
     }
     return render(request, 'edit_pet.html', context)
 
 
-
-def profile_page(request,pk):
-        user = Profile.objects.get(pk=pk)
-        existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
-        user_contacts = Contact.objects.filter(user=request.user)
-        if request.method == 'POST':
-            form = ProfileForm(request.POST, instance=request.user.profile)
-            if form.is_valid():
-                form.save()
-                return redirect(to='home')
-        else:
-            form = ProfileForm(instance=request.user.profile)
-
-        
-        
-        return render(request, 'profile.html', {
-        'user' : user,
-        'existing_contact': existing_contact,
-        'form': form,
-        'user_contacts': user_contacts
- 
-        })
 
 
 def contact_added(request,pk):
@@ -515,3 +505,11 @@ def contact_added(request,pk):
         })
 
 
+@login_required
+def delete_pet(request,pk):
+    pet = get_object_or_404(Pet, pk=pk)
+  
+    context = {
+       'pet': pet,
+    }
+    return render(request, 'delete-pet.html', context)
