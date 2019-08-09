@@ -39,7 +39,8 @@ urlpatterns += [
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
     path('profile/<int:pk>', views.profile_page, name='profile'),
     path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
-
+    # path('login/', auth_views.LoginView.as_view(), name='login'),
+    # path('logout/', auth_views.LogOutView.as_view(), name='logout'),
 
 
 ]
