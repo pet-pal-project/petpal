@@ -515,9 +515,29 @@ def delete_pet(request,pk):
             select_visit = existing_visit.visit
             Visit.objects.filter(id=select_visit.pk).delete()
         Pet.objects.filter(name=pet.name).delete()
+        messages.success(request, 'Critter profile has been removed')
         return redirect(to='home')
   
     context = {
        'pet': pet,
     }
     return render(request, 'delete-pet.html', context)
+
+@login_required
+def delete_account(request,pk):
+    user = Profile.objects.get(pk=pk)
+    if request.method == 'POST':
+        user_id = User.objects.get(pk=pk)
+        pets = Pet.objects.filter(owner=request.user)
+        for pet in pets:
+            existing_visits = Checklist.objects.filter(pet_id=pet)
+            for existing_visit in existing_visits:
+                select_visit = existing_visit.visit
+                Visit.objects.filter(id=select_visit.pk).delete()
+        User.objects.filter(id=user_id.pk).delete()
+        return redirect(to='/accounts/login')
+  
+    context = {
+       'user': user,
+    }
+    return render(request, 'delete-account.html', context)

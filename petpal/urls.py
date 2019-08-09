@@ -39,6 +39,7 @@ urlpatterns += [
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
     path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
     path('delete-pet/<int:pk>', views.delete_pet, name='delete-pet'),
+    path('delete-account/<int:pk>', views.delete_account, name='delete-account'),
 
 
 

@@ -40,5 +40,9 @@
                 </form>
         </div>
 </div>
+
+<br>
+<p><a href="{% url 'delete-account' request.user.id %}" class="btn btn-danger">Delete Account</a></p>
+
 {% endif %}
 {% endblock %}
