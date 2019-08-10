@@ -146,31 +146,31 @@ def add_checklist(request, pk):
                         new_task1 = Task(description=task1, checklist_id=checklist)
                         new_task1.save()
                     if task2:
-                        new_task2 = Task(description=task2, checklist_id=new_checklist)
+                        new_task2 = Task(description=task2, checklist_id=checklist)
                         new_task2.save()
                     if task3:
-                        new_task3 = Task(description=task3, checklist_id=new_checklist)
+                        new_task3 = Task(description=task3, checklist_id=checklist)
                         new_task3.save()
                     if task4:
-                        new_task4 = Task(description=task4, checklist_id=new_checklist)
+                        new_task4 = Task(description=task4, checklist_id=checklist)
                         new_task4.save()
                     if task5:
-                        new_task5 = Task(description=task5, checklist_id=new_checklist)
+                        new_task5 = Task(description=task5, checklist_id=checklist)
                         new_task5.save()
                     if task6:
-                        new_task6 = Task(description=task6, checklist_id=new_checklist)
+                        new_task6 = Task(description=task6, checklist_id=checklist)
                         new_task6.save()
                     if task7:
-                        new_task7 = Task(description=task7, checklist_id=new_checklist)
+                        new_task7 = Task(description=task7, checklist_id=checklist)
                         new_task7.save()
                     if task8:
-                        new_task8 = Task(description=task8, checklist_id=new_checklist)
+                        new_task8 = Task(description=task8, checklist_id=checklist)
                         new_task8.save()
                     if task9:
-                        new_task9 = Task(description=task9, checklist_id=new_checklist)
+                        new_task9 = Task(description=task9, checklist_id=checklist)
                         new_task9.save()
                     if task10:
-                        new_task10 = Task(description=task10, checklist_id=new_checklist)
+                        new_task10 = Task(description=task10, checklist_id=checklist)
                         new_task10.save()
                   
 
