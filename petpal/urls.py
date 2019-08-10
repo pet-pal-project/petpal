@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import include, url  # For django versions before 2.0
 from django.urls import include, path  # For django versions from 2.0 and up
+from django.contrib.auth import views as auth_views
 from core import views
 
 urlpatterns = [
@@ -38,6 +39,7 @@ urlpatterns += [
     path('add_pet/', views.add_pet, name='add-pet'),
     path('edit_pet/<int:pk>', views.edit_pet, name='edit-pet'),
     path('contact-added/<int:pk>', views.contact_added, name='contact-added'),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('delete-pet/<int:pk>', views.delete_pet, name='delete-pet'),
     path('delete-account/<int:pk>', views.delete_account, name='delete-account'),
 

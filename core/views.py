@@ -10,6 +10,7 @@ from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetFor
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
+from django.views.generic import TemplateView
 from django.contrib import messages
 import os
 import environ

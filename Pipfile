@@ -17,6 +17,7 @@ django-environ = "*"
 boto3 = "*"
 django-storages = "*"
 twilio = "*"
+trilio = "*"
 
 [requires]
 python_version = "3.7"

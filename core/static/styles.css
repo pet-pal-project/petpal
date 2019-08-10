@@ -107,5 +107,65 @@ h1{
 
 .add-pet-form {
 padding: 10mm;
+}
+
+
+#login {
+  /* background-image: url('./cartoon_landscape_vector_6816747.jpg'); */
+  background-image: url('./hills, sky, sun (1).jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: cover;
+}
+
+#login-form {
+  padding: 50px;
+  padding-bottom: 300px;
+}
+
+#log-in-btn {
+  box-sizing: border-box;
+  border-radius: 7px;
+  margin-top: 10px;
+  padding: 5px;  
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: ;
+  color: white;
+  background-color: dodgerblue;
+}
+
+
+#logout {
+  text-align: center;
+  padding-top: 45%;
+  padding-bottom: 55%;
+  padding-right: 50px;
+  padding-left: 50px;
 
 }
+
+
+/* Media Queries for responsive design */
+
+/* @media (min-width: 300) {
+  #login {
+    /* background-image: url('./cartoon_landscape_vector_6816747.jpg'); */
+    /* background-image: url('./hills, sky, sun (1).jpg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+  } */
+/* 
+} */
+
+/* 
+@media (min-width: 750) {
+
+  
+}
+
+
+
+@media (min-width: 1500) {
+
+  
+} */
