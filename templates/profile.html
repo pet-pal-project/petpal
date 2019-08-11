@@ -29,6 +29,12 @@
 {% for contact in user_contacts %}
     <p>{{ contact.name }}</p>
 {% endfor %}
+<form action="{% url 'profile' request.user.id %}" method="POST">
+        {% csrf_token %}
+        {{ search_user_form|crispy }}
+    <button class="btn btn-success" name="search-contact">Search</button>
+</form>
+<br>
 
 <div class="section">
         <div id="new-q-form">
@@ -36,7 +42,7 @@
                 <form action="{% url 'profile' request.user.id %}" method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                    <button class="btn btn-success">Save Profile</button>
+                    <button class="btn btn-success" name="save-profile">Save Profile</button>
                 </form>
         </div>
 </div>

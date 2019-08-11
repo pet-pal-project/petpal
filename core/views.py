@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
-from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm, ChecklistForm2
+from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm, ChecklistForm2, ProfileSearch
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
@@ -451,23 +451,40 @@ def profile_page(request,pk):
         user = Profile.objects.get(pk=pk)
         existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
         user_contacts = Contact.objects.filter(user=request.user)
-        if request.method == 'POST':
+
+        if request.method == 'POST' and 'save-profile' in request.POST:
             form = ProfileForm(request.POST, instance=request.user.profile)
+
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Your profile was updated successfully!')
                 pk = request.user.id
                 return redirect(to='profile', pk=pk)
 
+        if request.method == 'POST' and 'search-contact' in request.POST:
+            search_user_form = ProfileSearch(request.POST)
+
+            if search_user_form.is_valid():
+                search_name = search_user_form.cleaned_data.get('user_search')
+                search_filter = User.objects.filter(username=search_name)
+                if search_filter:
+                    user_pk=search_filter[0].pk
+                    return redirect(to='profile', pk=user_pk)
+                else:
+                    messages.info(request, 'Profile not found')
+                    return redirect(to='profile', pk=pk)
+
+
         else:
             form = ProfileForm(instance=request.user.profile)
-
+            search_user_form = ProfileSearch()
         
         
         return render(request, 'profile.html', {
         'user' : user,
         'existing_contact': existing_contact,
         'form': form,
+        'search_user_form': search_user_form,
         'user_contacts': user_contacts,
  
         })

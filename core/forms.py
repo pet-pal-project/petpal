@@ -67,3 +67,6 @@ class AddAPetForm(forms.ModelForm):
         model = Pet
         exclude = ['owner']
         fields = ('name','animal','profile_Image','breed','weight_in_lbs','sex','color_and_Markings','age', 'about_Me','vet_Info','emergency_Contact')
+
+class ProfileSearch(forms.Form):
+    user_search = forms.CharField(max_length=300, required=False, help_text="Use this form to search for another user's profile page. From there, you can add them to your contacts.")
