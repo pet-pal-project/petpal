@@ -44,7 +44,7 @@ class ChecklistForm(forms.Form):
     DateInput = partial(forms.DateInput, {'class': 'datepicker'})
     start_date = forms.DateField(widget=DateInput())
     end_date = forms.DateField(widget=DateInput())
-    task1 = forms.CharField(max_length=300, required=True)
+    task1 = forms.CharField(max_length=300, required=False)
     task2 = forms.CharField(max_length=300, required=False)
     task3 = forms.CharField(max_length=300, required=False)
     task4 = forms.CharField(max_length=300, required=False)
@@ -55,6 +55,11 @@ class ChecklistForm(forms.Form):
     task9 = forms.CharField(max_length=300, required=False)
     task10 = forms.CharField(max_length=300, required=False)
 
+class ChecklistForm2(forms.Form):
+    DateInput = partial(forms.DateInput, {'class': 'datepicker'})
+    start_date = forms.DateField(widget=DateInput())
+    end_date = forms.DateField(widget=DateInput())
+   
 
 """Create a new animal profile."""
 class AddAPetForm(forms.ModelForm):
@@ -62,3 +67,6 @@ class AddAPetForm(forms.ModelForm):
         model = Pet
         exclude = ['owner']
         fields = ('name','animal','profile_Image','breed','weight_in_lbs','sex','color_and_Markings','age', 'about_Me','vet_Info','emergency_Contact')
+
+class ProfileSearch(forms.Form):
+    user_search = forms.CharField(max_length=300, required=False, help_text="Use this form to search for another user's profile page. From there, you can add them to your contacts.")

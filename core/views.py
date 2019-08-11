@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.mail import send_mail
-from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm
+from core.forms import ProfileUpdateForm, ProfileForm, ChecklistForm, AddAPetForm, UserForm, ChecklistForm2, ProfileSearch
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from twilio.rest import Client
@@ -114,22 +114,22 @@ def register(request):
 def add_checklist(request, pk):
     pet = get_object_or_404(Pet, pk=pk)
     if request.method == 'POST':
-        form = ChecklistForm(request.POST)
+        form = ChecklistForm2(request.POST)
         sitterform = UserForm(request.POST, user=request.user)
         if form.is_valid() and sitterform.is_valid():
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')
             sitter = sitterform.cleaned_data.get('sitter') 
-            task1 = form.cleaned_data.get('task1')
-            task2 = form.cleaned_data.get('task2')
-            task3 = form.cleaned_data.get('task3')
-            task4 = form.cleaned_data.get('task4')
-            task5 = form.cleaned_data.get('task5')
-            task6 = form.cleaned_data.get('task6')
-            task7 = form.cleaned_data.get('task7')
-            task8 = form.cleaned_data.get('task8')
-            task9 = form.cleaned_data.get('task9')
-            task10 = form.cleaned_data.get('task10')
+            task1 = request.POST['task1']
+            task2 = request.POST['task2']
+            task3 = request.POST['task3']
+            task4 = request.POST['task4']
+            task5 = request.POST['task5']
+            task6 = request.POST['task6']
+            task7 = request.POST['task7']
+            task8 = request.POST['task8']
+            task9 = request.POST['task9']
+            task10 = request.POST['task10']
             print (start_date)
             print (end_date)
             delta = end_date - start_date
@@ -298,7 +298,7 @@ def add_checklist(request, pk):
             
             return redirect('home')
     else:
-        form = ChecklistForm()
+        form = ChecklistForm2()
         sitterform = UserForm(user=request.user)
 
         
@@ -400,23 +400,40 @@ def profile_page(request,pk):
         user = Profile.objects.get(pk=pk)
         existing_contact = Contact.objects.filter(user=request.user).filter(name=user)
         user_contacts = Contact.objects.filter(user=request.user)
-        if request.method == 'POST':
+
+        if request.method == 'POST' and 'save-profile' in request.POST:
             form = ProfileForm(request.POST, instance=request.user.profile)
+
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Your profile was updated successfully!')
                 pk = request.user.id
                 return redirect(to='profile', pk=pk)
 
+        if request.method == 'POST' and 'search-contact' in request.POST:
+            search_user_form = ProfileSearch(request.POST)
+
+            if search_user_form.is_valid():
+                search_name = search_user_form.cleaned_data.get('user_search')
+                search_filter = User.objects.filter(username=search_name)
+                if search_filter:
+                    user_pk=search_filter[0].pk
+                    return redirect(to='profile', pk=user_pk)
+                else:
+                    messages.info(request, 'Profile not found')
+                    return redirect(to='profile', pk=pk)
+
+
         else:
             form = ProfileForm(instance=request.user.profile)
-
+            search_user_form = ProfileSearch()
         
         
         return render(request, 'profile.html', {
         'user' : user,
         'existing_contact': existing_contact,
         'form': form,
+        'search_user_form': search_user_form,
         'user_contacts': user_contacts,
  
         })
@@ -494,3 +511,4 @@ def delete_account(request,pk):
        'user': user,
     }
     return render(request, 'delete-account.html', context)
+
