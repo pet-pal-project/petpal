@@ -71,11 +71,7 @@ def pet_detail(request,pk):
 
             message = client.messages \
                 .create(
-<<<<<<< HEAD
                     body=f"Hi { user.username }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
-=======
-                    body=f"Hi { pet.owner }, { pet.name }'s care list has been submitted! Login to your account to view the details: https://petz-app.herokuapp.com!", 
->>>>>>> c9d6f3e6b651354d3323f9620560f87f0ba42ee6
                     from_='+19842144116',
                     to=f'{ owner.phone }',
                 )
