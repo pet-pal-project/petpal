@@ -61,7 +61,7 @@ def pet_detail(request,pk):
         tasks_checked = request.POST.getlist('task')
         user = request.user
         tasks = tasks_checked
-        sitter_departed_notification(request, user, tasks)
+        checklist_sumbitted_notification(request, user, tasks)
 
         if tasks_checked:
             account_sid = os.environ.get('account_sid')
@@ -306,36 +306,10 @@ def add_checklist(request, pk):
 
 
 
-def new_pet_notification(request, user):
-    send_mail(
-        'You have created a new animal profile.',
-        f'Hi { user.username }, we are notifiying you that you have successfully created a new animal profile!',
-        'admin@critter-sitter.com',
-        [f'{ user.email }'],
-        fail_silently=False,
-    )
-    return render(request, 'email.html')
-    return HttpResponse('Mail successfully sent')
-
-
-# """ Notification to Sitter requesting visit acceptance."""
-# def new_assignment_notification(request, user):
+# def new_pet_notification(request, user):
 #     send_mail(
-#         'New Assignment',
-#         f'Hi { user.username }, we are notifiying you that { user.username } has requested to add you to an visist. Please log in to view and accept.',
-#         'admin@critter-sitter.com',
-#         [f'{ user.email }'],
-#         fail_silently=False,
-#     )
-#     return render(request, 'email.html')
-#     return HttpResponse('Mail successfully sent')
-
-
-# """ Notification to Owner that the Sitter has arrived for their visit."""
-# def sitter_arrived_notification(request, user):
-#     send_mail(
-#         'Your sitter has arrived.',
-#          f'Hi { user.username }, we are notifiying you that your sitter, { sitter } , has successfully checked in for their visit today.',
+#         'You have created a new animal profile.',
+#         f'Hi { user.username }, we are notifiying you that you have successfully created a new animal profile!',
 #         'admin@critter-sitter.com',
 #         [f'{ user.email }'],
 #         fail_silently=False,
@@ -345,12 +319,12 @@ def new_pet_notification(request, user):
 
 
 
-""" Notification to Owner that Sitter has checked out from their visit. Should include a list of completed tasks for that visit."""
-def sitter_departed_notification(request, user, tasks):
+""" Notification to Owner that the Sitter has submitted a checklist."""
+def checklist_sumbitted_notification(request, user, tasks):
     tasks = tasks
     send_mail(
         'Visit for today marked complete.',
-         f'Hi { user.username }, we are notifiying you that your sitter, { user.username } , has successfully checked out from their visit today. Log in to account to view details: https://petz-app.herokuapp.com', 
+         f'Hi { user.username }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/', 
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
@@ -358,31 +332,6 @@ def sitter_departed_notification(request, user, tasks):
     return render(request, 'email.html')
     return HttpResponse('Mail successfully sent')
 
-
-# """ For tasks marked as time-sensitive, that are not completed within the time allowed, a notification should be sent."""
-# def critical_task_missed(request, user):
-#     send_mail(
-#         'Critical task for today NOT marked complete.',
-#          f'Hi { user.username }, we are notifiying you that our system does not yet have a record of a critical task being marked complete for the visit today.',
-#         'admin@critter-sitter.com',
-#         [f'{ user.email }'],
-#         fail_silently=False,
-#     )
-#     return render(request, 'email.html')
-#     return HttpResponse('Mail successfully sent')
-
-
-# """ Once a time-sensitive task is marked as complete, a notification should be sent."""
-# def critical_task_complete(request, user):
-#     send_mail(
-#         'Your sitter has completed a critical task for today.',
-#          f'Hi { user.username }, we are notifiying you that our system shows sitter has marked  a critical task complete for the visit today.',
-#         'admin@critter-sitter.com',
-#         [f'{ user.email }'],
-#         fail_silently=False,
-#     )
-#     return render(request, 'email.html')
-#     return HttpResponse('Mail successfully sent')
 
 
 @login_required
@@ -432,8 +381,8 @@ def add_pet(request):
         if form.is_valid():
             form.save()
             user = request.user
-            new_pet_notification(request, user)
-            print("email sent")
+            # new_pet_notification(request, user)
+            # print("email sent")
 
             new_pet = form.save(commit=False)
             new_pet.owner = request.user
