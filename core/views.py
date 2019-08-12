@@ -93,6 +93,7 @@ def pet_detail(request,pk):
 
     if request.method == 'POST':
         tasks_checked = request.POST.getlist('task')
+        comment = request.POST['comment']
         user = request.user
         tasks = tasks_checked
         checklist_sumbitted_notification(request, user, tasks)
@@ -107,6 +108,14 @@ def pet_detail(request,pk):
                     body=f"Hi { pet.owner }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
                     from_='+19842144116',
                     to=f'{ owner.phone }',
+                )
+
+            send_mail(
+                    'Visit for today marked complete.',
+                    f'Hi { pet.owner }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/. Any additional comments from the sitter: { comment }', 
+                    'admin@critter-sitter.com',
+                    [f'{ owner.user.email }'],
+                    fail_silently=False,
                 )
 
         for task_checked in tasks_checked:
@@ -370,8 +379,8 @@ def add_checklist(request, pk):
 
 
 """ Notification to Owner that the Sitter has submitted a checklist."""
-def checklist_sumbitted_notification(request, user, tasks):
-    tasks = tasks
+def checklist_sumbitted_notification(request, user, comment):
+    comments = comment
     send_mail(
         'Visit for today marked complete.',
          f'Hi { user.username }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/', 
