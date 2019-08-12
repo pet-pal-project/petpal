@@ -14,7 +14,7 @@
     {% if existing_contact %}
         <p>You've already added this user as a contact.</p> 
     {% else %}
-        <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-primary">Add to Contacts</a></p>
+        <p><a href="{% url 'contact-added' user.pk %}" class="btn btn-info">Add to Contacts</a></p>
         <p>Adding this user grants them permission to view all of your critter profiles and allows you to add them as a sitter for future visits.</p>
     {% endif %}
 {% endif %}
@@ -32,7 +32,7 @@
 <form action="{% url 'profile' request.user.id %}" method="POST">
         {% csrf_token %}
         {{ search_user_form|crispy }}
-    <button class="btn btn-success" name="search-contact">Search</button>
+    <button class="btn btn-info" name="search-contact">Search</button>
 </form>
 <br>
 
@@ -42,7 +42,7 @@
                 <form action="{% url 'profile' request.user.id %}" method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                    <button class="btn btn-success" name="save-profile">Save Profile</button>
+                    <button class="btn btn-info" name="save-profile">Save Profile</button>
                 </form>
         </div>
 </div>

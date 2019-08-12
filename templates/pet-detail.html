@@ -6,8 +6,8 @@
         <h1>Critter Profile: {{ pet.name }}</h1>
 
         {% if pet.owner == request.user %}
-        <p><a href="{% url 'add-checklist' pet.id %}" class="btn btn-primary">Add a checklist for an upcoming visit(s)</a></p>
-        <p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-primary">Edit or Remove Critter Profile</a></p>
+        <p><a href="{% url 'add-checklist' pet.id %}" class="btn btn-info">Add a checklist for an upcoming visit(s)</a></p>
+        <p><a href="{% url 'edit-pet' pet.id %}" class="btn btn-info">Edit or Remove Critter Profile</a></p>
         {% endif %}
 
         <!-- <button type="button" class="button-lg">Pet Pal</button> -->
@@ -131,7 +131,7 @@
             {% for checklist in pet_checklists %}
                 {% if request.user.username == checklist.visit.sitter_id %}
                     <section>
-                    <p><b>Things to do on {{ checklist.visit.due_date_on }} by {{ checklist.visit.sitter_id }}</b></p>
+                    <p><h4>Things to do on {{ checklist.visit.due_date_on }} by {{ checklist.visit.sitter_id }}</h4></p>
                     <form action="" method="POST">
                     {% csrf_token %}
                         {% for task in all_tasks %}
@@ -140,10 +140,10 @@
                                 {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on and task.checklist_id.visit.sitter_id == request.user.username %} 
                                     
                                     {% if task.completed_on %}
-                                        <span>"{{ task.description }}" completed on {{ task.completed_on }}</span<br>
+                                        <h5>"{{ task.description }}" completed on {{ task.completed_on }}</h5>
                                         <p></p>
                                         {% else %}
-                                        <input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}<br>
+                                        <h5><input type="checkbox" value="{{task.id}}" name="task" class=""> {{ task.description }}</h5>
                                         <p></p>
                                     {% endif %}
 
@@ -151,7 +151,8 @@
                             {% endif %}
 
                         {% endfor %}
-                    <button type="submit" class="btn btn-success" name="submit-checklist">Update Checklist</button>
+                        <input type="text" name="comment" class="form-control" placeholder="Enter additional comments here" id="comment"><br>
+                    <button type="submit" class="btn btn-info" name="submit-checklist">Update Checklist</button>
                     </form> 
                     </section>  
                 {% endif %}

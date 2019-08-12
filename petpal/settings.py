@@ -32,6 +32,10 @@ AWS_S3_REGION_NAME = 'us-west-2'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
+#twilio
+account_sid = os.environ.get('account_sid')
+auth_token = os.environ.get('auth_token')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
