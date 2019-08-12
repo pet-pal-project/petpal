@@ -85,7 +85,7 @@
         {% for checklist in all_checklists %}
 
             {% if checklist.pet_id == pet %}
-            <section>
+            
             <p><h4>For {{ pet.name }} on {{ checklist.visit.due_date_on }} with pet sitter {{ checklist.visit.sitter_id }}</h4></p>
 
                 {% for task in all_tasks %}
@@ -105,7 +105,7 @@
                 <button class="btn btn-danger" name="delete-checklist" value="{{ checklist.pk }}">Delete checklist</button>
                 </form> 
             {% endif %}
-        </section>  
+         
         {% endfor %}
     {% endfor %}
 </section>
