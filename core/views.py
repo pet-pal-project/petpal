@@ -23,14 +23,33 @@ import datetime
 @login_required
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
-    my_visits = Visit.objects.filter(sitter_id=request.user)
+    my_visits = Visit.objects.filter(sitter_id=request.user).order_by('due_date_on')
     all_pets = Pet.objects.all()
     if my_visits:
         next_visit = my_visits[0]
 
     all_checklists = Checklist.objects.all()
     all_tasks = Task.objects.all()
+    all_pets = Pet.objects.all()
+    checked_pets=[]
+    unique_checklists=[]
+    unique_visits=[]
+    result_visits=[]
 
+    for visit in my_visits:
+        for checklist in all_checklists:
+            if checklist.visit == visit:
+                if checklist.pet_id not in checked_pets and visit not in unique_visits:
+                    unique_visits.append(visit)
+                    checked_pets.append(checklist.pet_id)
+                    unique_checklists.append(checklist)
+                    
+
+                            
+    result_visits.append(checked_pets)
+    result_visits.append(unique_visits)
+
+    print(unique_checklists)
     if request.method == 'POST' and 'delete-checklist' in request.POST:
         id_num = request.POST.get('delete-checklist')
         Checklist.objects.get(id=id_num).delete()
@@ -43,8 +62,11 @@ def index(request):
         'my_visits': my_visits,
         'all_checklists': all_checklists,
         'all_tasks': all_tasks,
-        'next_visit': next_visit,
+        'unique_visits': unique_visits,
         'all_pets': all_pets,
+        'checked_pets': checked_pets,
+        'result_visits': result_visits,
+        'unique_checklists': unique_checklists,
 
     }
     return render(request, 'dashboard.html', context=context)
@@ -71,6 +93,7 @@ def pet_detail(request,pk):
 
     if request.method == 'POST':
         tasks_checked = request.POST.getlist('task')
+        comment = request.POST['comment']
         user = request.user
         tasks = tasks_checked
         checklist_sumbitted_notification(request, user, tasks)
@@ -85,6 +108,14 @@ def pet_detail(request,pk):
                     body=f"Hi { pet.owner }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
                     from_='+19842144116',
                     to=f'{ owner.phone }',
+                )
+
+            send_mail(
+                    'Visit for today marked complete.',
+                    f'Hi { pet.owner }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/. Any additional comments from the sitter: { comment }', 
+                    'admin@critter-sitter.com',
+                    [f'{ owner.user.email }'],
+                    fail_silently=False,
                 )
 
         for task_checked in tasks_checked:
@@ -153,7 +184,13 @@ def add_checklist(request, pk):
                     visitpk = existing_visit[0]
                     Checklist.objects
                     existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                    checklist = existing_checklist[0]
+                    
+                    if existing_checklist:
+                        checklist = existing_checklist[0]
+                    else:
+                        checklist = Checklist(visit=visitpk, pet_id=pet)
+                        checklist.save()
+
                     if task1:
                         new_task1 = Task(description=task1, checklist_id=checklist)
                         new_task1.save()
@@ -228,14 +265,24 @@ def add_checklist(request, pk):
             else:
                 for day in range(num_of_days+1):
                     print("MORE THAN ONE DAY!")
+                    
                     current_date = start_date + datetime.timedelta(days=day)
+                    print(current_date)
                     existing_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=current_date)
                 
                     if existing_visit:
+                        print("EXISTING VISIT")
                         visitpk = existing_visit[0]
+                        print(visitpk)
                         Checklist.objects
                         existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                        checklist = existing_checklist[0]
+
+                        if existing_checklist:
+                            checklist = existing_checklist[0]
+                        else:
+                            checklist = Checklist(visit=visitpk, pet_id=pet)
+                            checklist.save()
+
                         if task1:
                             new_task1 = Task(description=task1, checklist_id=checklist)
                             new_task1.save()
@@ -332,8 +379,8 @@ def add_checklist(request, pk):
 
 
 """ Notification to Owner that the Sitter has submitted a checklist."""
-def checklist_sumbitted_notification(request, user, tasks):
-    tasks = tasks
+def checklist_sumbitted_notification(request, user, comment):
+    comments = comment
     send_mail(
         'Visit for today marked complete.',
          f'Hi { user.username }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/', 
