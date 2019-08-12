@@ -100,10 +100,10 @@
 
                 {% endfor %}
                 <form method="post">  
-                {% csrf_token %}  
-                <br>        
+                {% csrf_token %}         
                 <button class="btn btn-danger" name="delete-checklist" value="{{ checklist.pk }}">Delete checklist</button>
-                </form> 
+                <br>
+            </form> 
             {% endif %}
          
         {% endfor %}
