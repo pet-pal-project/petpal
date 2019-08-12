@@ -70,7 +70,7 @@ def pet_detail(request,pk):
 
             message = client.messages \
                 .create(
-                    body=f"Hi { user.username }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
+                    body=f"Hi { pet.owner }, { pet.name }'s checklist has been submitted! Login to your account to view the details: http://www.crittersitterapp.com", 
                     from_='+19842144116',
                     to=f'{ owner.phone }',
                 )
