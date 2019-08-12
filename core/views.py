@@ -24,6 +24,11 @@ import datetime
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
     my_visits = Visit.objects.filter(sitter_id=request.user).order_by('due_date_on')
+    my_visits = Visit.objects.filter(sitter_id=request.user)
+    all_pets = Pet.objects.all()
+    if my_visits:
+        next_visit = my_visits[0]
+
     all_checklists = Checklist.objects.all()
     all_tasks = Task.objects.all()
     all_pets = Pet.objects.all()
@@ -39,6 +44,12 @@ def index(request):
                             
 
     print(unique_visits)
+    if request.method == 'POST' and 'delete-checklist' in request.POST:
+        id_num = request.POST.get('delete-checklist')
+        Checklist.objects.get(id=id_num).delete()
+        messages.success(request, 'Checklist successfuly deleted')
+        return redirect('home')
+
 
     context = {
         'my_pet_list': my_pet_list,
@@ -46,6 +57,8 @@ def index(request):
         'all_checklists': all_checklists,
         'all_tasks': all_tasks,
         'unique_visits': unique_visits,
+        'next_visit': next_visit,
+        'all_pets': all_pets,
 
     }
     return render(request, 'dashboard.html', context=context)
@@ -524,4 +537,5 @@ def delete_account(request,pk):
        'user': user,
     }
     return render(request, 'delete-account.html', context)
+
 
