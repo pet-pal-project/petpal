@@ -47,33 +47,13 @@ class Task (models.Model):
 
     
 
-# class Routine (models.Model):
-#     description = models.TextField(max_length=200, null=False, blank=False)
-#     due_date = models.DateTimeField()
-#     assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
-#     complete = models.BooleanField(default=False)
-#     notes = models.TextField(max_length=2000, null=True, blank=True)
-#     assigned_sitter = models.ForeignKey(to=User, on_delete=models.SET_NULL, null=True, related_name="assigned_sitter")
-
-#     def __str__(self):
-#         return self.description
-
-# class Critical (models.Model):
-#     description = models.TextField(max_length=200, null=False, blank=False)
-#     due_date = models.DateTimeField()
-#     assigned_pet = models.ForeignKey(to=Pet, on_delete=models.SET_NULL, null=True)
-#     complete = models.BooleanField(default=False)
-#     notes = models.TextField(max_length=2000, null=True, blank=True)
-
-#     def __str__(self):
-#         return self.description
-
 class Profile (models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=True, help_text="Enter your first and last name")
     phone = models.CharField(max_length=10, blank=True, help_text="Enter your main phone number")
     mobile_phone = models.CharField(max_length=10, blank=True)
     work_phone = models.CharField(max_length=10, blank=True)
+   
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

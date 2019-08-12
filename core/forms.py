@@ -33,10 +33,11 @@ class ProfileUpdateForm(forms.Form):
     workphone = forms.CharField(max_length=10)
 
 
+
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['name','phone','work_phone']
+        fields = ['name','phone','work_phone',]
 
   
 

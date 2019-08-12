@@ -70,7 +70,7 @@ def pet_detail(request,pk):
 
             message = client.messages \
                 .create(
-                    body=f"Hi { pet.owner }, { pet.name }'s care list has been submitted! Login to your account to view the details: https://petz-app.herokuapp.com!", 
+                    body=f"Hi { pet.owner }, { pet.name }'s care list has been submitted! Login to your account to view the details: http://www.crittersitterapp.com!", 
                     from_='+19842144116',
                     to=f'{ owner.phone }',
                 )
@@ -306,25 +306,13 @@ def add_checklist(request, pk):
 
 
 
-# def new_pet_notification(request, user):
-#     send_mail(
-#         'You have created a new animal profile.',
-#         f'Hi { user.username }, we are notifiying you that you have successfully created a new animal profile!',
-#         'admin@critter-sitter.com',
-#         [f'{ user.email }'],
-#         fail_silently=False,
-#     )
-#     return render(request, 'email.html')
-#     return HttpResponse('Mail successfully sent')
-
-
 
 """ Notification to Owner that the Sitter has submitted a checklist."""
 def checklist_sumbitted_notification(request, user, tasks):
     tasks = tasks
     send_mail(
-        'Visit for today marked complete.',
-         f'Hi { user.username }, we are notifiying you that your sitter has submitted their checklist for today. Log in to your account here to view the details: http://www.crittersitterapp.com/accounts/login/', 
+        'A critter checklist has been submitted.',
+         f'Hi { pet.owner }, your sitter has submitted a care checklist for { pet.name }! Login to your account to view the details: http://www.crittersitterapp.com!', 
         'admin@critter-sitter.com',
         [f'{ user.email }'],
         fail_silently=False,
