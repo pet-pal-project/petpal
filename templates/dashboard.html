@@ -32,8 +32,8 @@
     {% endif %}  
 </section>
 
-{% for visit in result_visits %}
-    <p>{{ visit }}</p>
+{% for checklist in unique_checklists %}
+    <p>{{ checklist.pet_id }} upcoming visit on {{ checklist.visit.due_date_on }}</p>
 {% endfor %}
 
 

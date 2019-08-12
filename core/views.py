@@ -32,6 +32,7 @@ def index(request):
     all_tasks = Task.objects.all()
     all_pets = Pet.objects.all()
     checked_pets=[]
+    unique_checklists=[]
     unique_visits=[]
     result_visits=[]
 
@@ -41,14 +42,14 @@ def index(request):
                 if checklist.pet_id not in checked_pets and visit not in unique_visits:
                     unique_visits.append(visit)
                     checked_pets.append(checklist.pet_id)
-                    print(checklist.pet_id)
-                    print(visit)
+                    unique_checklists.append(checklist)
+                    
 
                             
     result_visits.append(checked_pets)
     result_visits.append(unique_visits)
 
-    print(result_visits)
+    print(unique_checklists)
     if request.method == 'POST' and 'delete-checklist' in request.POST:
         id_num = request.POST.get('delete-checklist')
         Checklist.objects.get(id=id_num).delete()
@@ -65,6 +66,7 @@ def index(request):
         'all_pets': all_pets,
         'checked_pets': checked_pets,
         'result_visits': result_visits,
+        'unique_checklists': unique_checklists,
 
     }
     return render(request, 'dashboard.html', context=context)
