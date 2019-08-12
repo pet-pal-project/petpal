@@ -24,7 +24,6 @@ import datetime
 def index(request):
     my_pet_list = Pet.objects.filter(owner=request.user)
     my_visits = Visit.objects.filter(sitter_id=request.user).order_by('due_date_on')
-    my_visits = Visit.objects.filter(sitter_id=request.user)
     all_pets = Pet.objects.all()
     if my_visits:
         next_visit = my_visits[0]
@@ -34,16 +33,22 @@ def index(request):
     all_pets = Pet.objects.all()
     checked_pets=[]
     unique_visits=[]
-    
+    result_visits=[]
+
     for visit in my_visits:
         for checklist in all_checklists:
             if checklist.visit == visit:
                 if checklist.pet_id not in checked_pets and visit not in unique_visits:
                     unique_visits.append(visit)
                     checked_pets.append(checklist.pet_id)
-                            
+                    print(checklist.pet_id)
+                    print(visit)
 
-    print(unique_visits)
+                            
+    result_visits.append(checked_pets)
+    result_visits.append(unique_visits)
+
+    print(result_visits)
     if request.method == 'POST' and 'delete-checklist' in request.POST:
         id_num = request.POST.get('delete-checklist')
         Checklist.objects.get(id=id_num).delete()
@@ -57,8 +62,9 @@ def index(request):
         'all_checklists': all_checklists,
         'all_tasks': all_tasks,
         'unique_visits': unique_visits,
-        'next_visit': next_visit,
         'all_pets': all_pets,
+        'checked_pets': checked_pets,
+        'result_visits': result_visits,
 
     }
     return render(request, 'dashboard.html', context=context)
@@ -167,7 +173,13 @@ def add_checklist(request, pk):
                     visitpk = existing_visit[0]
                     Checklist.objects
                     existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                    checklist = existing_checklist[0]
+                    
+                    if existing_checklist:
+                        checklist = existing_checklist[0]
+                    else:
+                        checklist = Checklist(visit=visitpk, pet_id=pet)
+                        checklist.save()
+
                     if task1:
                         new_task1 = Task(description=task1, checklist_id=checklist)
                         new_task1.save()
@@ -242,14 +254,24 @@ def add_checklist(request, pk):
             else:
                 for day in range(num_of_days+1):
                     print("MORE THAN ONE DAY!")
+                    
                     current_date = start_date + datetime.timedelta(days=day)
+                    print(current_date)
                     existing_visit = Visit.objects.filter(sitter_id=sitter).filter(due_date_on=current_date)
                 
                     if existing_visit:
+                        print("EXISTING VISIT")
                         visitpk = existing_visit[0]
+                        print(visitpk)
                         Checklist.objects
                         existing_checklist = Checklist.objects.filter(visit=visitpk).filter(pet_id=pet)
-                        checklist = existing_checklist[0]
+
+                        if existing_checklist:
+                            checklist = existing_checklist[0]
+                        else:
+                            checklist = Checklist(visit=visitpk, pet_id=pet)
+                            checklist.save()
+
                         if task1:
                             new_task1 = Task(description=task1, checklist_id=checklist)
                             new_task1.save()
