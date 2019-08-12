@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <h1>Dashboard</h1>
 <!-- <button type="button" class="button-lg">Pet Pal</button> -->
 
 <h2>Critters I'm Sitting</h2>
 
-<section>
+<!-- <section>
     {% if my_visits %}
         
         {% for visit in my_visits %}
@@ -20,8 +19,8 @@
                         </div>
                     {% else %}
                         
-                        <!-- <p>Additional Visit: {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</p>  -->
-
+                        <p>Additional Visit: {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</p>  -->
+<!-- 
                     {% endif %}
                 {% endif %}
             {% endfor %}
@@ -29,12 +28,22 @@
         
     {% else %}
         <p>You have no upcoming visits.</p>
-    {% endif %}  
+    {% endif %}   -->
 </section>
 
-{% for checklist in unique_checklists %}
-    <p>{{ checklist.pet_id }} upcoming visit on {{ checklist.visit.due_date_on }}</p>
-{% endfor %}
+<section>
+{% if my_visits %}
+<p>Clicking on the critter's next visit will take you to that critter's page and also show all upcoming visits.</p>
+    {% for checklist in unique_checklists %}
+        <p>
+        <h2>{{ checklist.pet_id }}</h2>
+        <a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-info">Next Visit: {{ checklist.visit.due_date_on }}</a>
+        </p>
+    {% endfor %}
+{% else %}
+    <p>You have no upcoming visits.</p>
+{% endif %}
+</section>
 
 
 
@@ -43,20 +52,24 @@
 <h2>My Critters</h2>
 <section>
 {% if my_pet_list %}
+<div class="pet-display-desktop">
     {% for pet in my_pet_list %}
-    <div>
-        <div class="pet-display">
-            <img class="pet-image-homepage" src="{{pet.profile_Image.url}}">
-            <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>{{ pet.name }}</strong></a>
+    
+        <div>
+            <div class="pet-display">
+                <img class="pet-image-homepage" src="{{pet.profile_Image.url}}">
+                <p><a href="{{pet.get_absolute_url}}" class="pet-display-link"><strong>{{ pet.name }}</strong></a>
+            </div>
         </div>
-    </div>
+    
     {% endfor %}
+</div>
 {% else %}
     <p>You have no critters.</p>
 {% endif %}
     
 <div class="pet-display">
-<a class="btn btn-primary" href="{% url 'add-pet' %}">Add a Critter</a>
+<a class="btn btn-info" href="{% url 'add-pet' %}">Add a Critter</a>
 </div>
 
 </section>
@@ -65,6 +78,7 @@
 
 {% if my_pet_list %}
 <h2>Tasks For My Sitters</h2>
+<p>Visits you've scheduled for your critters will appear here.</p>
 <section>
     {% for pet in my_pet_list %}
 
@@ -72,23 +86,22 @@
 
             {% if checklist.pet_id == pet %}
             <section>
-            <p><b>For {{ pet.name }} on {{ checklist.visit.due_date_on }} with pet sitter {{ checklist.visit.sitter_id }}</b></p>
+            <p><h4>For {{ pet.name }} on {{ checklist.visit.due_date_on }} with pet sitter {{ checklist.visit.sitter_id }}</h4></p>
 
                 {% for task in all_tasks %}
                     
                     {% if task.checklist_id.pet_id == pet and task.checklist_id.visit.due_date_on == checklist.visit.due_date_on and task.checklist_id.visit.sitter_id == checklist.visit.sitter_id  %}
                             {% if task.completed_on %}
-                            <span>✔ "{{ task.description }}" completed on {{ task.completed_on }} by {{ checklist.visit.sitter_id }}</span<br>
-                            <p></p>
+                            <h5>✔ "{{ task.description }}" completed on {{ task.completed_on }} by {{ checklist.visit.sitter_id }}</h5>
                             {% else %}
-                            {{ task.description }}<br>
-                            <p></p>
+                            <h5>{{ task.description }}</h5>
                             {% endif %}
                     {% endif %}
 
                 {% endfor %}
                 <form method="post">  
-                {% csrf_token %}          
+                {% csrf_token %}  
+                <br>        
                 <button class="btn btn-danger" name="delete-checklist" value="{{ checklist.pk }}">Delete checklist</button>
                 </form> 
             {% endif %}

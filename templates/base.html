@@ -14,6 +14,7 @@
   <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
   <script src="{% static 'main.js' %}" defer></script>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
   <script>
     $(document).ready(function() {
     $('.datepicker').datepicker({
@@ -22,7 +23,6 @@
 
     });
   </script>
-  <link rel="stylesheet" href="{% static 'styles.css' %}">
 
 
 
@@ -40,9 +40,7 @@
                     <div class="login-area">
                       <p><a href="/accounts/login">Login</a> | <a href="/accounts/register">Register</a></p>
                     </div> 
-                      {% endif %}
-    
-             
+                      {% endif %}     
     </header>
     {% include 'messages.html' %}
     {% block content %}
