@@ -26,8 +26,20 @@ def index(request):
     my_visits = Visit.objects.filter(sitter_id=request.user)
     all_checklists = Checklist.objects.all()
     all_tasks = Task.objects.all()
+    all_pets = Pet.objects.all()
+    next_visit_per_pet=[]
+    done = False
+    for pet in all_pets:
+        while done == False:
+            for visit in my_visits:
+                for checklist in all_checklists:
+                    if checklist.visit = visit:
+                        if visit not in next_visit_per_pet:
+                            next_visit_per_pet.append(visit)
+                            done = True
 
 
+    print(next_visit_per_pet)
     context = {
         'my_pet_list': my_pet_list,
         'my_visits': my_visits,
