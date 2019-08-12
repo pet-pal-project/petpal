@@ -11,9 +11,16 @@
         {% for visit in my_visits %}
             {% for checklist in all_checklists %}
                 {% if checklist.visit == visit %}
-                <div class="pet-display">
-                    <a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-primary">Scheduled visit for {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</a>
-                </div>
+                    {% for unique_visit in unique_visits %}
+                        {% if unique_visit == visit %}
+                            <div class="pet-display">
+                                <a href="{{checklist.pet_id.get_absolute_url}}" class="btn btn-primary">Scheduled visit for {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</a>
+                            </div>
+                        {% else %}
+                            <p>Additional Visit: {{ checklist.pet_id }} on {{ checklist.visit.due_date_on }}</p>
+
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             {% endfor %}
         {% endfor %}
