@@ -571,4 +571,8 @@ def delete_account(request,pk):
     }
     return render(request, 'delete-account.html', context)
 
+def about(request,):
+   
+    return render(request, 'about.html')
+
 
