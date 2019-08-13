@@ -8,16 +8,18 @@
 
 
 <div id="login">
-
     <div id="login-form">
+        <div class="login-box">
         <h1>Log In</h1>
         <form method="post">
             {% csrf_token %}
             {{ form|crispy }}
-            <button id="log-in-btn" type="submit">Log In</button>
+            <button class="btn btn-info" type="submit">Log In</button>
         </form>
+        <br>
+        <p>Don't have an account? <a href="/accounts/register">Register Here</a></p>
     </div>
-   
+    </div>
 </div>
 
 {% endblock %}
