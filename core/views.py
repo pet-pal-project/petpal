@@ -96,7 +96,6 @@ def pet_detail(request,pk):
         comment = request.POST['comment']
         user = request.user
         tasks = tasks_checked
-        checklist_sumbitted_notification(request, user, tasks)
 
         if tasks_checked:
             account_sid = os.environ.get('account_sid')
