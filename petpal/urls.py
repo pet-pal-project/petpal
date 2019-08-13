@@ -42,7 +42,7 @@ urlpatterns += [
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('delete-pet/<int:pk>', views.delete_pet, name='delete-pet'),
     path('delete-account/<int:pk>', views.delete_account, name='delete-account'),
-
+    path('about', views.about, name='about'),
 
 
 ]

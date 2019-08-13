@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block content %}
+<h1>About Critter Sitter</h1>
+<p>Get on the same page with your animal caregivers, neighbors and family as you share a concise list of tasks required for care and share access to all your pet’s vital information. Stay up to date with real time notifications and improve the quality of care for your animals <em>and</em> quality of communication with your caregivers.</p>
+
+<section>
+        <div class="pet-display-desktop">
+        
+                <div>
+                    <div class="pet-display">
+                        <img class="pet-image-homepage" src="{% static './amanda.jpg' %}">
+                        <p><strong>Amanda Phillipson</strong></a>
+                        <p>LinkedIn Page</p>
+                        <p>GitHub Page</p>
+                    </div>
+                </div>
+        
+          
+        
+                <div>
+                    <div class="pet-display">
+                        <img class="pet-image-homepage" src="{% static './katie.jpg' %}">
+                        <p><strong>Katie Lucas</strong></a>
+                        <p>LinkedIn Page</p>
+                        <p>GitHub Page</p>
+                    </div>
+                </div>
+        
+       
+
+                <div>
+                    <div class="pet-display">
+                        <img class="pet-image-homepage" src="{% static './bob.jpg' %}">
+                        <p><strong>Bob Hagh</strong></a>
+                        <p>LinkedIn Page</p>
+                        <p>GitHub Page</p>
+                    </div>
+                </div>
+        
+        </div>    
+</section>
+
+{% endblock %}
